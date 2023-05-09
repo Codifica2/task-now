@@ -43,14 +43,14 @@ function LoginForm () {
   }
   return (
         <>
-            <div className='d-flex flex-column align-items-center justify-content-center' style={{ height: '100vh', background: 'repeating-linear-gradient(-45deg, #b2b2e0 0, #b2b2e0 30px, #42275a 40px, #42275a 40px)' }}>
+            <div className='d-flex flex-column align-items-center justify-content-center' style={{ height: '100vh', background: 'repeating-linear-gradient(-45deg, #707070 0, #707070 60px, #000000 80px, #000000 40px)' }}>
 
                 <Container className='my-5' style={{ maxWidth: '36%', margin: '0 auto' }}>
                     <Card style={{ borderRadius: '20px' }}>
                         <Card.Body className='d-flex flex-column align-items-center justify-content-center'>
                             <div className='d-flex flex-column align-items-center'>
-                                <img src='ant.svg' alt="logo" style={{ width: '40%', height: '40%' }} className='ms-2'/>
-                                <span style={{ fontSize: '2rem', fontWeight: 'bold', textShadow: '2px 2px 0px rgba(0,0,0,0.5)', marginTop: '1rem', marginBottom: '1rem' }}>TaskNow</span>
+                                <img src='logo.svg' alt="logo" style={{ width: '50%', height: '50%' }} className='ms-2'/>
+                                <span style={{ fontSize: '2rem', fontWeight: 'bold', textShadow: '2px 2px 0px rgba(0,0,0,0.5)', marginBottom: '1rem' }}>TaskNow</span>
                             </div>
 
                             {error && <div className="text-danger">{error}</div>}
