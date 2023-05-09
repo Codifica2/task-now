@@ -2,20 +2,27 @@
 import React, { useState } from 'react'
 // Import Button, Container, Card, CardBody, CardImage, Row, Col, Icon, Input from react-bootstrap
 import { Button, Container, Card, InputGroup } from 'react-bootstrap'
+import { useUserContext } from '@/context/auth-context.js'
+
 function LoginForm () {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState(false)
+  const { user, token } = useUserContext()
+  const { setUser, setToken } = useUserContext()
+
   const handleLogin = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/login', {
+      // Fetch to localhost:3001/api/login
+      const response = await fetch('http://localhost:3001/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: username, password })
       })
       const data = await response.json()
       if (response.ok) {
-        // Guardar token y otros datos en algún lugar (por ejemplo, usar react Context)
+        setUser({ id: data.id, name: data.name, email: data.email })
+        setToken(data.auth_token)
         console.log('Login successful:', data)
       } else {
         throw new Error(data.error)
