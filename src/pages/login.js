@@ -36,6 +36,8 @@ function LoginForm () {
         // Set in localstorage
         localStorage.setItem('user', JSON.stringify({ id: data.id, name: data.name, email: data.email }))
         localStorage.setItem('token', data.auth_token)
+        // Redirect to dashboard
+        window.location.href = '/dashboard'
       } else {
         throw new Error(data.error)
       }
