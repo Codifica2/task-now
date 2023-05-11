@@ -14,6 +14,9 @@ export default function CreateTaskModal ({ show, handleClose, handleSave }) {
     handleSave(task)
   }
 
+  // Validar que todos los campos tienen un valor
+  const isFormValid = title && description && dueDate && category
+
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -58,7 +61,7 @@ export default function CreateTaskModal ({ show, handleClose, handleSave }) {
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>Cerrar</Button>
-        <Button variant="primary" onClick={handleSubmit}>Guardar tarea</Button>
+        <Button variant="primary" onClick={handleSubmit} disabled={!isFormValid}>Guardar tarea</Button>
       </Modal.Footer>
     </Modal>
   )
