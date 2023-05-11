@@ -19,8 +19,25 @@ export default function ListTasks () {
   }
 
   const handleSaveTask = async (task) => {
-    // Aquí podrías hacer la petición HTTP para guardar la tarea
-    console.log(task)
+    const response = await fetch('http://localhost:3001/api/tasks', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      },
+      body: JSON.stringify(task)
+    })
+
+    if (!response.ok) {
+      const message = `An error has occured: ${response.status}`
+      throw new Error(message)
+    }
+
+    const savedTask = await response.json()
+    console.log(savedTask)
+
+    // Aquí puedes añadir la tarea recién creada a tu lista de tareas.
+    setTasks([...tasks, savedTask])
     setShowCreateTaskModal(false)
   }
 
