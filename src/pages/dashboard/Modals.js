@@ -106,16 +106,19 @@ export function EditTaskModal ({ show, handleClose, handleSave, taskToEdit }) {
     if (taskToEdit) {
       setTitle(taskToEdit.title)
       setDescription(taskToEdit.description)
-      setDueDate(taskToEdit.dueDate)
-      console.log(taskToEdit)
+      setDueDate(new Date(taskToEdit.due_date))
       setCategory(taskToEdit.category)
       setStatus(taskToEdit.status)
     }
   }, [taskToEdit])
 
   const handleSubmit = () => {
-    const updatedTask = { title, description, dueDate, category, status }
-    handleSave(updatedTask)
+    // date en tipo Date
+    const date = new Date(dueDate)
+    // Convierte la fecha al formato de cadena ISO y usa slice para obtener solo la parte de la fecha.
+    const formattedDate = date.toISOString().slice(0, 10)
+    const task = { title, description, due_date: formattedDate, category, status }
+    handleSave(task)
   }
 
   const isFormValid = title && description && dueDate && category && status
