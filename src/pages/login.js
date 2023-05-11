@@ -69,7 +69,7 @@ function LoginForm () {
 
                         <Button variant='dark' size="lg" className="mb-4 px-5" style={{ width: '80%' }} onClick={handleLogin} disabled={!username || !password}>Login</Button>
                         <a className='small text-muted' href='#'>Forgot password?</a>
-                        <p className="mb-5 pb-md-2" style={{ color: '#393f81' }}>Don't have an account? <a href="#!" style={{ color: '#393f81' }}>Register here</a></p>
+                        <p className="mb-5 pb-md-2" style={{ color: '#393f81' }}>Don't have an account? <a href="/register" style={{ color: '#393f81' }}>Register here</a></p>
 
                     </Card.Body>
                 </Card>
