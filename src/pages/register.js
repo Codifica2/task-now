@@ -80,7 +80,7 @@ function RegisterForm () {
 
             <Button variant='dark' size="md" className="mb-4 px-5" style={{ width: '80%' }} onClick={handleRegister} disabled={!firstName || !lastName || !email || !password || !confirmPassword}>Register</Button>
 
-            <p className="mb-5 pb-md-2" style={{ color: '#393f81' }}>Already have an account? <a href="/login" style={{ color: '#393f81' }}>Login here</a></p>
+            <p className="mb-2 pb-md-2" style={{ color: '#393f81' }}>Already have an account? <a href="/login" style={{ color: '#393f81' }}>Login here</a></p>
 
             </Card.Body>
         </Card>
