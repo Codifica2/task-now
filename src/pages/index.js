@@ -1,14 +1,16 @@
+/* eslint-disable no-unused-vars */
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import Head from 'next/head';
 import Image from 'next/image';
+import withAuth from '../../withAuth'
 
 import Menu from './menu/Menu';
 import Header from './header/Header';
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home () {
+function Home () {
   return (
     <>
     <Header></Header>
@@ -119,3 +121,5 @@ export default function Home () {
     </>
   )
 }
+
+export default withAuth(Home) // envuelve tu componente con el HOC antes de exportarlo
