@@ -81,7 +81,7 @@ export function ConfirmDeleteTaskModal ({ show, handleClose, handleConfirm }) {
           Cancelar
         </Button>
         <Button variant="danger" onClick={handleConfirm}>
-          Confirmar eliminación de tarea
+          Confirmar
         </Button>
       </Modal.Footer>
     </Modal>
