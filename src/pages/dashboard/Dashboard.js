@@ -9,6 +9,8 @@ export default function ListTasks () {
   const [tasks, setTasks] = useState([])
   const [filterBy, setFilterBy] = useState('')
   const [showCreateTaskModal, setShowCreateTaskModal] = useState(false)
+  const [showDeleteTaskModal, setShowDeleteTaskModal] = useState(false)
+  const [taskToDelete, setTaskToDelete] = useState(null)
 
   const handleCreateTask = () => {
     setShowCreateTaskModal(true)
@@ -16,6 +18,11 @@ export default function ListTasks () {
 
   const handleCloseCreateTaskModal = () => {
     setShowCreateTaskModal(false)
+  }
+
+  const handleDeleteTaskClick = (task) => {
+    setTaskToDelete(task)
+    setShowDeleteTaskModal(true)
   }
 
   const handleSaveTask = async (task) => {
@@ -39,6 +46,11 @@ export default function ListTasks () {
     // Aquí puedes añadir la tarea recién creada a tu lista de tareas.
     setTasks([...tasks, savedTask])
     setShowCreateTaskModal(false)
+  }
+
+  const handleConfirmDeleteTask = async () => {
+    console.log(`Eliminando tarea ${taskToDelete.id}`)
+    setShowDeleteTaskModal(false)
   }
 
   useEffect(() => {
@@ -93,7 +105,7 @@ export default function ListTasks () {
                 <div className="mr-auto">{task.status}</div>
                 <div>
                   <Button variant="primary"><FaEdit /></Button>
-                  <Button variant="danger"><FaTrash /></Button>
+                  <Button variant="danger" onClick={() => handleDeleteTaskClick(task)}><FaTrash /></Button>
                 </div>
               </Card.Footer>
             </Card>
@@ -102,6 +114,7 @@ export default function ListTasks () {
         ))}
       </Row>
       <CreateTaskModal show={showCreateTaskModal} handleClose={handleCloseCreateTaskModal} handleSave={handleSaveTask} />
+      <ConfirmDeleteTaskModal show={showDeleteTaskModal} handleClose={() => setShowDeleteTaskModal(false)} handleConfirm={handleConfirmDeleteTask} />
     </Container>
   )
 }
