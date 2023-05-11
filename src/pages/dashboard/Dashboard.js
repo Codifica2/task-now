@@ -3,12 +3,14 @@ import styles from './Dashboard.module.css'
 import { useState, useEffect } from 'react'
 import { Container, Row, Col, Card, Form, InputGroup, FormControl, Button, Modal, ListGroup } from 'react-bootstrap'
 import { FaEdit, FaTrash } from 'react-icons/fa'
-import CreateTaskModal from './CreateTaskModal'
+import { CreateTaskModal, ConfirmDeleteTaskModal } from './Modals'
 
 export default function ListTasks () {
   const [tasks, setTasks] = useState([])
   const [filterBy, setFilterBy] = useState('')
   const [showCreateTaskModal, setShowCreateTaskModal] = useState(false)
+  const [showDeleteTaskModal, setShowDeleteTaskModal] = useState(false)
+  const [taskToDelete, setTaskToDelete] = useState(null)
 
   const handleCreateTask = () => {
     setShowCreateTaskModal(true)
@@ -16,6 +18,11 @@ export default function ListTasks () {
 
   const handleCloseCreateTaskModal = () => {
     setShowCreateTaskModal(false)
+  }
+
+  const handleDeleteTaskClick = (task) => {
+    setTaskToDelete(task)
+    setShowDeleteTaskModal(true)
   }
 
   const handleSaveTask = async (task) => {
@@ -39,6 +46,32 @@ export default function ListTasks () {
     // Aquí puedes añadir la tarea recién creada a tu lista de tareas.
     setTasks([...tasks, savedTask])
     setShowCreateTaskModal(false)
+  }
+
+  const handleConfirmDeleteTask = async () => {
+    try {
+      const response = await fetch(`http://localhost:3001/api/tasks/${taskToDelete.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      })
+
+      if (!response.ok) {
+        const message = `An error has occured: ${response.status}`
+        throw new Error(message)
+      }
+
+      // Actualizar la lista de tareas después de eliminar una
+      setTasks(tasks.filter(task => task.id !== taskToDelete.id))
+
+      console.log(`Tarea ${taskToDelete.id} eliminada`)
+    } catch (error) {
+      console.error('Error al eliminar la tarea:', error)
+    }
+
+    setShowDeleteTaskModal(false)
   }
 
   useEffect(() => {
@@ -93,7 +126,7 @@ export default function ListTasks () {
                 <div className="mr-auto">{task.status}</div>
                 <div>
                   <Button variant="primary"><FaEdit /></Button>
-                  <Button variant="danger"><FaTrash /></Button>
+                  <Button variant="danger" onClick={() => handleDeleteTaskClick(task)}><FaTrash /></Button>
                 </div>
               </Card.Footer>
             </Card>
@@ -102,6 +135,7 @@ export default function ListTasks () {
         ))}
       </Row>
       <CreateTaskModal show={showCreateTaskModal} handleClose={handleCloseCreateTaskModal} handleSave={handleSaveTask} />
+      <ConfirmDeleteTaskModal show={showDeleteTaskModal} handleClose={() => setShowDeleteTaskModal(false)} handleConfirm={handleConfirmDeleteTask} />
     </Container>
   )
 }
