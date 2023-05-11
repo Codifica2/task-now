@@ -14,7 +14,9 @@ export function CreateTaskModal ({ show, handleClose, handleSave }) {
     const date = new Date(dueDate)
     // Convierte la fecha al formato de cadena ISO y usa slice para obtener solo la parte de la fecha.
     const formattedDate = date.toISOString().slice(0, 10)
-    const task = { title, description, due_date: formattedDate, category }
+    // Obtain user.id from localStorage
+    const user = JSON.parse(localStorage.getItem('user'))
+    const task = { title, description, due_date: formattedDate, category, creator: user.id }
     handleSave(task)
   }
 
