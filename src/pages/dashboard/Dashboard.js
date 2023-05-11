@@ -49,7 +49,28 @@ export default function ListTasks () {
   }
 
   const handleConfirmDeleteTask = async () => {
-    console.log(`Eliminando tarea ${taskToDelete.id}`)
+    try {
+      const response = await fetch(`http://localhost:3001/api/tasks/${taskToDelete.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+      })
+
+      if (!response.ok) {
+        const message = `An error has occured: ${response.status}`
+        throw new Error(message)
+      }
+
+      // Actualizar la lista de tareas después de eliminar una
+      setTasks(tasks.filter(task => task.id !== taskToDelete.id))
+
+      console.log(`Tarea ${taskToDelete.id} eliminada`)
+    } catch (error) {
+      console.error('Error al eliminar la tarea:', error)
+    }
+
     setShowDeleteTaskModal(false)
   }
 
