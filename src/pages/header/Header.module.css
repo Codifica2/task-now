@@ -1,0 +1,22 @@
+.navbar-custom {
+    padding: 0px;
+    background-color: #4a81f7;
+  }
+  .nav-link {
+    color: #0B70AE;
+  }
+  .nav-link:hover {
+    background-color: #F7A74A;
+  }
+  
+  .nav-link.active {
+    color: #ffd4bc;
+    background-color: #0B70AE;
+  }
+  
+  .nav-links-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-grow: 1;
+  }
