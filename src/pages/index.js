@@ -7,23 +7,21 @@ import withAuth from '../../withAuth'
 
 import Menu from './menu/Menu'
 import Header from './header/Header'
-import Dashboard from './dashboard/Dashboard';
+import Dashboard from './dashboard/Dashboard'
 
 const inter = Inter({ subsets: ['latin'] })
 
 function Home () {
   return (
     <>
-      
       <Header></Header>
       <div className={styles.container} style={{ display: 'flex', flexDirection: 'row' }}>
-  <Menu />
-  <div className={styles.content}>
-    <Dashboard />
-  </div>
-</div>
+        <Menu />
+        <div className={styles.content}>
+          <Dashboard />
+        </div>
+      </div>
 
-      
     </>
   )
 }
