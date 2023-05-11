@@ -82,7 +82,30 @@ export default function ListTasks () {
   }
 
   const handleSaveEditedTask = async (updatedTask) => {
-    // Aquí va el código para hacer la llamada a la API y actualizar la tarea
+    try {
+      const response = await fetch(`http://localhost:3001/api/tasks/${taskToEdit.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify(updatedTask)
+      })
+
+      if (!response.ok) {
+        const message = `An error has occured: ${response.status}`
+        throw new Error(message)
+      }
+
+      // Filter que agrega todas las tareas que existen y reemplaza la tarea que se editó
+      setTasks(tasks.filter(task => task.id !== taskToEdit.id).concat({ ...updatedTask, id: taskToEdit.id }))
+
+      console.log(`Tarea ${taskToEdit.id} actualizada`)
+    } catch (error) {
+      console.error('Error al actualizar la tarea:', error)
+    }
+
+    setShowEditTaskModal(false)
   }
 
   useEffect(() => {
