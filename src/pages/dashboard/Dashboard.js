@@ -3,7 +3,7 @@ import styles from './Dashboard.module.css'
 import { useState, useEffect } from 'react'
 import { Container, Row, Col, Card, Form, InputGroup, FormControl, Button, Modal, ListGroup } from 'react-bootstrap'
 import { FaEdit, FaTrash } from 'react-icons/fa'
-import CreateTaskModal from './CreateTaskModal'
+import { CreateTaskModal, ConfirmDeleteTaskModal } from './Modals'
 
 export default function ListTasks () {
   const [tasks, setTasks] = useState([])

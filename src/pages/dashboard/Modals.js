@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Modal, Button, Form, Row, Col } from 'react-bootstrap'
 import DatePicker from 'react-datepicker'
 
-export default function CreateTaskModal ({ show, handleClose, handleSave }) {
+export function CreateTaskModal ({ show, handleClose, handleSave }) {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [dueDate, setDueDate] = useState('')
@@ -62,6 +62,27 @@ export default function CreateTaskModal ({ show, handleClose, handleSave }) {
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>Cerrar</Button>
         <Button variant="primary" onClick={handleSubmit} disabled={!isFormValid}>Guardar tarea</Button>
+      </Modal.Footer>
+    </Modal>
+  )
+}
+
+export function ConfirmDeleteTaskModal ({ show, handleClose, handleConfirm }) {
+  return (
+    <Modal show={show} onHide={handleClose} backdrop="static" keyboard={false}>
+      <Modal.Header closeButton>
+        <Modal.Title>Confirmar Eliminación</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        ¿Estás seguro que quieres eliminar esta tarea?
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handleClose}>
+          Cancelar
+        </Button>
+        <Button variant="danger" onClick={handleConfirm}>
+          Confirmar eliminación de tarea
+        </Button>
       </Modal.Footer>
     </Modal>
   )
