@@ -10,7 +10,11 @@ export function CreateTaskModal ({ show, handleClose, handleSave }) {
   const [category, setCategory] = useState('')
 
   const handleSubmit = () => {
-    const task = { title, description, dueDate, category }
+    // date en tipo Date
+    const date = new Date(dueDate)
+    // Convierte la fecha al formato de cadena ISO y usa slice para obtener solo la parte de la fecha.
+    const formattedDate = date.toISOString().slice(0, 10)
+    const task = { title, description, due_date: formattedDate, category }
     handleSave(task)
   }
 
