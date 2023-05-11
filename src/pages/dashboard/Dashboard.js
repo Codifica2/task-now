@@ -3,10 +3,43 @@ import styles from './Dashboard.module.css'
 import { useState, useEffect } from 'react'
 import { Container, Row, Col, Card, Form, InputGroup, FormControl, Button, Modal, ListGroup } from 'react-bootstrap'
 import { FaEdit, FaTrash } from 'react-icons/fa'
+import CreateTaskModal from './CreateTaskModal'
 
 export default function ListTasks () {
   const [tasks, setTasks] = useState([])
   const [filterBy, setFilterBy] = useState('')
+  const [showCreateTaskModal, setShowCreateTaskModal] = useState(false)
+
+  const handleCreateTask = () => {
+    setShowCreateTaskModal(true)
+  }
+
+  const handleCloseCreateTaskModal = () => {
+    setShowCreateTaskModal(false)
+  }
+
+  const handleSaveTask = async (task) => {
+    const response = await fetch('http://localhost:3001/api/tasks', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      },
+      body: JSON.stringify(task)
+    })
+
+    if (!response.ok) {
+      const message = `An error has occured: ${response.status}`
+      throw new Error(message)
+    }
+
+    const savedTask = await response.json()
+    console.log(savedTask)
+
+    // Aquí puedes añadir la tarea recién creada a tu lista de tareas.
+    setTasks([...tasks, savedTask])
+    setShowCreateTaskModal(false)
+  }
 
   useEffect(() => {
     const getTasks = async () => {
@@ -22,9 +55,6 @@ export default function ListTasks () {
 
   const filteredTasks = tasks
 
-  const handleCreateTask = () => {
-    console.log('crear tarea')
-  }
   return (
     <Container>
 
@@ -71,6 +101,7 @@ export default function ListTasks () {
           </Col>
         ))}
       </Row>
+      <CreateTaskModal show={showCreateTaskModal} handleClose={handleCloseCreateTaskModal} handleSave={handleSaveTask} />
     </Container>
   )
 }
