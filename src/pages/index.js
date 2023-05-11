@@ -1,12 +1,12 @@
 /* eslint-disable no-unused-vars */
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
-import Head from 'next/head';
-import Image from 'next/image';
+import Head from 'next/head'
+import Image from 'next/image'
 import withAuth from '../../withAuth'
 
-import Menu from './menu/Menu';
-import Header from './header/Header';
+import Menu from './menu/Menu'
+import Header from './header/Header'
 
 const inter = Inter({ subsets: ['latin'] })
 
