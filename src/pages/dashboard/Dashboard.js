@@ -3,7 +3,7 @@ import styles from './Dashboard.module.css'
 import { useState, useEffect } from 'react'
 import { Container, Row, Col, Card, Form, InputGroup, FormControl, Button, Modal, ListGroup } from 'react-bootstrap'
 import { FaEdit, FaTrash } from 'react-icons/fa'
-import { CreateTaskModal, ConfirmDeleteTaskModal } from './Modals'
+import { CreateTaskModal, ConfirmDeleteTaskModal, EditTaskModal } from './Modals'
 
 export default function ListTasks () {
   const [tasks, setTasks] = useState([])
@@ -11,6 +11,8 @@ export default function ListTasks () {
   const [showCreateTaskModal, setShowCreateTaskModal] = useState(false)
   const [showDeleteTaskModal, setShowDeleteTaskModal] = useState(false)
   const [taskToDelete, setTaskToDelete] = useState(null)
+  const [showEditTaskModal, setShowEditTaskModal] = useState(false)
+  const [taskToEdit, setTaskToEdit] = useState(null)
 
   const handleCreateTask = () => {
     setShowCreateTaskModal(true)
@@ -23,6 +25,11 @@ export default function ListTasks () {
   const handleDeleteTaskClick = (task) => {
     setTaskToDelete(task)
     setShowDeleteTaskModal(true)
+  }
+
+  const handleEditTaskClick = (task) => {
+    setTaskToEdit(task)
+    setShowEditTaskModal(true)
   }
 
   const handleSaveTask = async (task) => {
@@ -72,6 +79,10 @@ export default function ListTasks () {
     }
 
     setShowDeleteTaskModal(false)
+  }
+
+  const handleSaveEditedTask = async (updatedTask) => {
+    // Aquí va el código para hacer la llamada a la API y actualizar la tarea
   }
 
   useEffect(() => {
@@ -125,7 +136,7 @@ export default function ListTasks () {
               <Card.Footer className="d-flex justify-content-between">
                 <div className="mr-auto">{task.status}</div>
                 <div>
-                  <Button variant="primary"><FaEdit /></Button>
+                  <Button variant="primary" onClick={() => handleEditTaskClick(task)}><FaEdit /></Button>
                   <Button variant="danger" onClick={() => handleDeleteTaskClick(task)}><FaTrash /></Button>
                 </div>
               </Card.Footer>
@@ -136,6 +147,7 @@ export default function ListTasks () {
       </Row>
       <CreateTaskModal show={showCreateTaskModal} handleClose={handleCloseCreateTaskModal} handleSave={handleSaveTask} />
       <ConfirmDeleteTaskModal show={showDeleteTaskModal} handleClose={() => setShowDeleteTaskModal(false)} handleConfirm={handleConfirmDeleteTask} />
+      <EditTaskModal show={showEditTaskModal} taskToEdit={taskToEdit} handleClose={() => setShowEditTaskModal(false)} handleSave={handleSaveEditedTask} />
     </Container>
   )
 }
