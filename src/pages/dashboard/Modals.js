@@ -180,3 +180,30 @@ export function EditTaskModal ({ show, handleClose, handleSave, taskToEdit }) {
     </Modal>
   )
 }
+
+export function TaskDetailModal ({ show, handleClose, task }) {
+  if (!task) return null
+
+  return (
+    <Modal show={show} onHide={handleClose}>
+      <Modal.Header closeButton>
+        <Modal.Title>{task.title}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <h5>Description</h5>
+        <p>{task.description}</p>
+        <h5>Due Date</h5>
+        <p>{task.due_date}</p>
+        <h5>Status</h5>
+        <p>{task.status}</p>
+        <h5>Category</h5>
+        <p>{task.category}</p>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handleClose}>
+          Close
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  )
+}
