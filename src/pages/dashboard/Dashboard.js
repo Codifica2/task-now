@@ -170,8 +170,10 @@ export default function ListTasks () {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       })
       const data = await response.json()
-      setTasks(data)
-      console.log(data)
+      // Filtrar las tareas para que se incluyan las creadas por el usuario actual, es decir, usando el user id en localStorage
+      const userTasks = data.filter(task => task.creator === JSON.parse(localStorage.getItem('user')).id)
+      setTasks(userTasks)
+      console.log(userTasks)
     }
     getTasks()
   }, [])
