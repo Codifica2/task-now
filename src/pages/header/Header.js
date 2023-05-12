@@ -20,19 +20,6 @@ export default function Header() {
   const [passwordEmpty, setPasswordEmpty] = useState(true);
   const [nameEmpty, setNameEmpty] = useState(true);
 
-  const handleNameChange = (event) => {
-    setNewName(event.target.value);
-  };
-  const handleLastNameChange = (event) => {
-    setNewLastName(event.target.value);
-  };
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
-  
-  const handlePasswordConfirmationChange = (event) => {
-    setPasswordConfirmation(event.target.value);
-  };
   const handleConfirmFields = async () => { 
     if ((newPassword === passwordConfirmation) && (newPassword.length!=0) && (newName.length!=0) && (newLastName.length!=0)){
       setPasswordsMatch(true);
@@ -41,9 +28,6 @@ export default function Header() {
       setShowModalEditUser(false);
 
       const loggedUser = JSON.parse(localStorage.getItem('user'))
-
-      console.log(loggedUser)
-      console.log(loggedUser.id)
 
       const response = await fetch(`http://localhost:3001/api/users/${loggedUser.id}`, {
         method: 'PUT',
@@ -61,8 +45,9 @@ export default function Header() {
       } else {
         console.log(response)
       }
-      const savedTask = response.json()
-      console.log(savedTask)
+      setPassword("");
+      setNewName(newName);
+      setNewLastName(newLastName);
 
     } else {
       if (newPassword != passwordConfirmation){
@@ -107,7 +92,6 @@ export default function Header() {
                   type="text"
                   placeholder="Ingrese su nombre"
                   value={newName}
-                  onChange={handleNameChange}
                 />
             </Form.Group>
             <Form.Group >
@@ -116,7 +100,6 @@ export default function Header() {
                   type="text"
                   placeholder="Ingrese su apellido"
                   value={newLastName}
-                  onChange={handleLastNameChange}
                 />
             </Form.Group>
 
@@ -126,7 +109,6 @@ export default function Header() {
                   type="password"
                   placeholder="Ingrese su contraseña"
                   value={newPassword}
-                  onChange={handlePasswordChange}
                 />
             </Form.Group>
             <Form.Group controlId="formBasicPasswordConfirmation">
@@ -135,7 +117,6 @@ export default function Header() {
                   type="password"
                   placeholder="Ingrese su contraseña"
                   value={passwordConfirmation}
-                  onChange={handlePasswordConfirmationChange}
                 />
                 {!passwordsMatch && (
                 <div style={{ color: "red", display: "block" }}>
