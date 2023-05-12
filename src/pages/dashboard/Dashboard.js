@@ -13,6 +13,30 @@ export default function ListTasks () {
   const [taskToDelete, setTaskToDelete] = useState(null)
   const [showEditTaskModal, setShowEditTaskModal] = useState(false)
   const [taskToEdit, setTaskToEdit] = useState(null)
+  const [filters, setFilters] = useState({
+    name: '',
+    dueDate: '',
+    description: '',
+    status: '',
+    category: ''
+  })
+
+  const handleFilterChange = (filter, value) => {
+    setFilters({
+      ...filters,
+      [filter]: value
+    })
+  }
+
+  const clearFilters = () => {
+    setFilters({
+      name: '',
+      dueDate: '',
+      description: '',
+      status: '',
+      category: ''
+    })
+  }
 
   const handleCreateTask = () => {
     setShowCreateTaskModal(true)
@@ -31,6 +55,23 @@ export default function ListTasks () {
     setTaskToEdit(task)
     setShowEditTaskModal(true)
   }
+
+  const filteredTasks = tasks.filter((task) => {
+    if (filterBy === 'title' && filters.name && !task.title.toLowerCase().includes(filters.name.toLowerCase())) return false
+    if (filterBy === 'description' && filters.description && !task.description.toLowerCase().includes(filters.description.toLowerCase())) return false
+    if (filterBy === 'dueDateAsc' && filters.due_date && new Date(task.due_date) !== new Date(filters.due_date)) return false
+    if (filterBy === 'dueDateDesc' && filters.due_date && new Date(task.due_date) !== new Date(filters.due_date)) return false
+    if (filterBy === 'category' && filters.category && !task.category.toLowerCase().includes(filters.category.toLowerCase())) return false
+    if (filterBy === 'state' && filters.status && !task.status.toLowerCase().includes(filters.status.toLowerCase())) return false
+    return true
+  }).sort((a, b) => {
+    if (filterBy === 'dueDateAsc') {
+      return new Date(a.due_date) - new Date(b.due_date)
+    } else if (filterBy === 'dueDateDesc') {
+      return new Date(b.due_date) - new Date(a.due_date)
+    }
+    return 0
+  })
 
   const handleSaveTask = async (task) => {
     const response = await fetch('http://localhost:3001/api/tasks', {
@@ -120,8 +161,6 @@ export default function ListTasks () {
     getTasks()
   }, [])
 
-  const filteredTasks = tasks
-
   return (
     <Container>
 
@@ -139,16 +178,51 @@ export default function ListTasks () {
               <option value="">Filtrar y ordenar por...</option>
               <option value="title">Título</option>
               <option value="description">Descripcion</option>
-              <option value="date" >Fecha de vencimiento</option>
+              <option value="dueDateAsc" >Fecha de vencimiento (ascendente)</option>
+              <option value="dueDateDesc" >Fecha de vencimiento (descendente)</option>
               <option value="category">Categoría</option>
               <option value="state">Estado</option>
             </Form.Select>
+            <Button variant="primary" className="my-custom-button" onClick={clearFilters}>Limpiar filtros</Button>
+
+            {filterBy === 'title' && (
+              <Form.Control
+                type="text"
+                placeholder="Filtrar por nombre"
+                value={filters.name}
+                onChange={(e) => handleFilterChange('name', e.target.value)}
+              />
+            )}
+            {filterBy === 'description' && (
+              <Form.Control
+                type="text"
+                placeholder="Filtrar por descripción"
+                value={filters.description}
+                onChange={(e) => handleFilterChange('description', e.target.value)}
+              />
+            )}
+            {filterBy === 'category' && (
+              <Form.Control
+                type="text"
+                placeholder="Filtrar por categoría"
+                value={filters.category}
+                onChange={(e) => handleFilterChange('category', e.target.value)}
+              />
+            )}
+            {filterBy === 'state' && (
+              <Form.Control
+                type="text"
+                placeholder="Filtrar por estado"
+                value={filters.status}
+                onChange={(e) => handleFilterChange('status', e.target.value)}
+              />
+            )}
 
           </Col>
         </InputGroup>
       </Row>
       <Row className="card-columns">
-        {tasks.map((task) => (
+        {filteredTasks.map((task) => (
           <Col xs={12} sm={6} md={4} key={task.id}>
             <br />
             <Card>
