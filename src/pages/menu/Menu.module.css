@@ -1,6 +1,8 @@
 .container {
-    display: flex;
-  }
+  display: flex;
+  height: 100vh !important;
+  position: fixed;
+}
   
   .sidebar {
     width: 200px;
