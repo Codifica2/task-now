@@ -3,7 +3,7 @@ import styles from './Dashboard.module.css'
 import { useState, useEffect } from 'react'
 import { Container, Row, Col, Card, Form, InputGroup, FormControl, Button, Modal, ListGroup } from 'react-bootstrap'
 import { FaEdit, FaTrash } from 'react-icons/fa'
-import { CreateTaskModal, ConfirmDeleteTaskModal, EditTaskModal } from './Modals'
+import { CreateTaskModal, ConfirmDeleteTaskModal, EditTaskModal, TaskDetailModal } from './Modals'
 
 export default function ListTasks () {
   const [tasks, setTasks] = useState([])
@@ -20,6 +20,8 @@ export default function ListTasks () {
     status: '',
     category: ''
   })
+  const [showTaskDetailModal, setShowTaskDetailModal] = useState(false)
+  const [taskToShow, setTaskToShow] = useState(null)
 
   const handleFilterChange = (filter, value) => {
     setFilters({
@@ -54,6 +56,19 @@ export default function ListTasks () {
   const handleEditTaskClick = (task) => {
     setTaskToEdit(task)
     setShowEditTaskModal(true)
+  }
+
+  const handleTaskClick = async (id) => {
+    const response = await fetch(`http://localhost:3001/api/tasks/${id}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    })
+    const data = await response.json()
+    setTaskToShow(data)
+    setShowTaskDetailModal(true)
+  }
+
+  const handleCloseTaskDetailModal = () => {
+    setShowTaskDetailModal(false)
   }
 
   const filteredTasks = tasks.filter((task) => {
@@ -155,8 +170,10 @@ export default function ListTasks () {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       })
       const data = await response.json()
-      setTasks(data)
-      console.log(data)
+      // Filtrar las tareas para que se incluyan las creadas por el usuario actual, es decir, usando el user id en localStorage
+      const userTasks = data.filter(task => task.creator === JSON.parse(localStorage.getItem('user')).id)
+      setTasks(userTasks)
+      console.log(userTasks)
     }
     getTasks()
   }, [])
@@ -225,7 +242,7 @@ export default function ListTasks () {
         {filteredTasks.map((task) => (
           <Col xs={12} sm={6} md={4} key={task.id}>
             <br />
-            <Card>
+            <Card onClick={() => handleTaskClick(task.id)}>
               <Card.Body>
                 <Card.Title>{task.title}</Card.Title>
                 <Card.Text>{task.description}</Card.Text>
@@ -245,6 +262,7 @@ export default function ListTasks () {
       <CreateTaskModal show={showCreateTaskModal} handleClose={handleCloseCreateTaskModal} handleSave={handleSaveTask} />
       <ConfirmDeleteTaskModal show={showDeleteTaskModal} handleClose={() => setShowDeleteTaskModal(false)} handleConfirm={handleConfirmDeleteTask} />
       <EditTaskModal show={showEditTaskModal} taskToEdit={taskToEdit} handleClose={() => setShowEditTaskModal(false)} handleSave={handleSaveEditedTask} />
+      <TaskDetailModal show={showTaskDetailModal} handleClose={handleCloseTaskDetailModal} task={taskToShow} />
     </Container>
   )
 }
