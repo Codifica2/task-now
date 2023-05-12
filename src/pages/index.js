@@ -15,9 +15,9 @@ function Home () {
   return (
     <>
       <Header></Header>
-      <div className={styles.container} style={{ display: 'flex', flexDirection: 'row' }}>
+      <div className={styles.container} style={{ paddingTop: '40px' }}>
         <Menu />
-        <div className={styles.content}>
+        <div className={styles.content} style={{ marginLeft: '200px', marginTop: '0px' }}>
           <Dashboard />
         </div>
       </div>

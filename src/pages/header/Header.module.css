@@ -1,11 +1,14 @@
 .container-custom {
   margin-left: 0px !important;
   margin-right: 0px !important;
-  width: 100% !important;
 }
 .navbar-custom {
   background-color: #4a81f7;
   width: 100% !important;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
 }
 .nav-link {
   color: #ebebeb;
