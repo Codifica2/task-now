@@ -4,12 +4,11 @@ import { useTaskContext } from '@/context/taskContext.js'
 import { useState, useEffect } from 'react'
 import { Container, Row, Col, Card, Form, InputGroup, FormControl, Button, Modal, ListGroup } from 'react-bootstrap'
 import { FaEdit, FaTrash } from 'react-icons/fa'
-import { CreateTaskModal, ConfirmDeleteTaskModal, EditTaskModal, TaskDetailModal } from './Modals'
+import { ConfirmDeleteTaskModal, EditTaskModal, TaskDetailModal } from '../Modals'
 
 export default function ListTasks () {
   const { tasks, setTasks } = useTaskContext()
   const [filterBy, setFilterBy] = useState('')
-  const [showCreateTaskModal, setShowCreateTaskModal] = useState(false)
   const [showDeleteTaskModal, setShowDeleteTaskModal] = useState(false)
   const [taskToDelete, setTaskToDelete] = useState(null)
   const [showEditTaskModal, setShowEditTaskModal] = useState(false)
@@ -39,14 +38,6 @@ export default function ListTasks () {
       status: '',
       category: ''
     })
-  }
-
-  const handleCreateTask = () => {
-    setShowCreateTaskModal(true)
-  }
-
-  const handleCloseCreateTaskModal = () => {
-    setShowCreateTaskModal(false)
   }
 
   const handleDeleteTaskClick = (task) => {
@@ -88,29 +79,6 @@ export default function ListTasks () {
     }
     return 0
   })
-
-  const handleSaveTask = async (task) => {
-    const response = await fetch('http://localhost:3001/api/tasks', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      },
-      body: JSON.stringify(task)
-    })
-
-    if (!response.ok) {
-      const message = `An error has occured: ${response.status}`
-      throw new Error(message)
-    }
-
-    const savedTask = await response.json()
-    console.log(savedTask)
-
-    // Aquí puedes añadir la tarea recién creada a tu lista de tareas.
-    setTasks([...tasks, savedTask])
-    setShowCreateTaskModal(false)
-  }
 
   const handleConfirmDeleteTask = async () => {
     try {
@@ -185,9 +153,6 @@ export default function ListTasks () {
 
       <Row>
         <InputGroup className="mt-3">
-          <Col xs={12} className="my-col-button text-center">
-            <Button variant="primary" className="my-custom-button" onClick={handleCreateTask}>Crear tarea</Button>
-          </Col>
           <Col xs={10}>
             <br></br>
 
@@ -261,7 +226,6 @@ export default function ListTasks () {
           </Col>
         ))}
       </Row>
-      <CreateTaskModal show={showCreateTaskModal} handleClose={handleCloseCreateTaskModal} handleSave={handleSaveTask} />
       <ConfirmDeleteTaskModal show={showDeleteTaskModal} handleClose={() => setShowDeleteTaskModal(false)} handleConfirm={handleConfirmDeleteTask} />
       <EditTaskModal show={showEditTaskModal} taskToEdit={taskToEdit} handleClose={() => setShowEditTaskModal(false)} handleSave={handleSaveEditedTask} />
       <TaskDetailModal show={showTaskDetailModal} handleClose={handleCloseTaskDetailModal} task={taskToShow} />

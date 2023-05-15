@@ -1,18 +1,25 @@
-.container-custom {
-  margin-left: 0px !important;
-  margin-right: 0px !important;
-}
 .navbar-custom {
-  background-color: #4a81f7;
-  width: 100% !important;
-  position: fixed;
   top: 0;
-  left: 0;
-  z-index: 9999;
+  height: 6rem;
+
+  align-items: flex-end;
+
+  padding-inline: 2rem;
+  padding-bottom: 1rem;
+
+  background-color: #ffffff;
+  border-bottom: 1px solid #e2e3e6;
 }
+
+.navbar-nav{
+  margin-left: auto;
+  gap: 1rem;
+}
+
 .nav-link {
-  color: #ebebeb;
+  color: #132239;
 }
+
 .nav-link:hover {
   background-color: #097799;
 }
