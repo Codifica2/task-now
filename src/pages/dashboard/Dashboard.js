@@ -4,7 +4,7 @@ import { useTaskContext } from '@/context/taskContext.js'
 import { useState, useEffect } from 'react'
 import { Container, Row, Col, Card, Form, InputGroup, FormControl, Button, Modal, ListGroup } from 'react-bootstrap'
 import { FaEdit, FaTrash } from 'react-icons/fa'
-import { CreateTaskModal, ConfirmDeleteTaskModal, EditTaskModal, TaskDetailModal } from './Modals'
+import { CreateTaskModal, ConfirmDeleteTaskModal, EditTaskModal, TaskDetailModal } from '../Modals'
 
 export default function ListTasks () {
   const { tasks, setTasks } = useTaskContext()
