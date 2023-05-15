@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import { TaskProvider } from '@/context/taskContext.js'
 import withAuth from '../../withAuth'
 
 import Menu from './menu/Menu'
@@ -8,13 +9,15 @@ import Dashboard from './dashboard/Dashboard'
 function Home () {
   return (
     <>
-      <Header></Header>
-      <div>
-        <Menu />
+      <TaskProvider>
+        <Header></Header>
         <div>
-          <Dashboard />
+          <Menu />
+          <div>
+            <Dashboard />
+          </div>
         </div>
-      </div>
+      </TaskProvider>
     </>
   )
 }
