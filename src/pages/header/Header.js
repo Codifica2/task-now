@@ -8,6 +8,7 @@ import perfil from './perfil.png'
 import { useState } from 'react'
 import { useTaskContext } from '@/context/taskContext.js'
 import { CreateTaskModal } from '../Modals'
+import NavDropdown from 'react-bootstrap/NavDropdown'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -115,27 +116,19 @@ export default function Header () {
 
   return (
     <Navbar className={styles['navbar-custom']}>
-        <CreateTaskModal show={showCreateTaskModal} handleClose={handleCloseCreateTaskModal} handleSave={handleSaveTask} />
-
-        <Navbar.Toggle aria-controls="basic-navbar-nav" className="me-auto" />
-
-        <Container>
-          <Navbar.Brand className={styles['nav-link']} href="/">TaskNow</Navbar.Brand>
-        </Container>
-
-        <Button
-          variant="primary"
-          onClick={handleCreateTask}
-        >
-          Crear una nueva tarea
-        </Button>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Brand className={styles['nav-link']} href="/">TaskNow</Navbar.Brand>
 
         {/* Profile editing modal */}
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className={`ml-auto ${styles['nav-links-right']} justify-content-end`}>
-            <button className={styles['profile-button']} onClick={() => setShowModalEditUser(true)}>
-              <Image src={perfil} width={32} height={32} alt="Perfil" />
-            </button>
+          <Nav className={styles['navbar-nav']}>
+            <Button
+                variant="primary"
+                onClick={handleCreateTask}
+              >
+                Crear una nueva tarea
+            </Button>
+
             <Modal show={showModalEditUser} onHide={() => setShowModalEditUser(false)}>
               <Modal.Header closeButton>
                 <Modal.Title>Editar Nombre y Contraseña</Modal.Title>
@@ -207,9 +200,16 @@ export default function Header () {
                 <Button variant="primary" onClick={(handleConfirmFields)}>Guardar</Button>
               </Modal.Footer>
             </Modal>
-            <Nav.Link className={styles['nav-link']} onClick={handleLogout}>Cerrar Sesión</Nav.Link>
+
+            <NavDropdown title="Opciones" id="basic-nav-dropdown">
+              <NavDropdown.Item onClick={() => setShowModalEditUser(true)}> Editar perfil </NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item onClick={handleLogout}> Cerrar sesión </NavDropdown.Item>
+            </NavDropdown>
           </Nav>
         </Navbar.Collapse>
+
+        <CreateTaskModal show={showCreateTaskModal} handleClose={handleCloseCreateTaskModal} handleSave={handleSaveTask} />
     </Navbar>
   )
 }

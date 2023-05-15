@@ -3,12 +3,18 @@
   height: 6rem;
 
   align-items: flex-end;
+
   margin-left: var(--siderbard-length);
   padding-inline: 2rem;
   padding-bottom: 1rem;
-  
+
   background-color: #ffffff;
   border-bottom: 1px solid #e2e3e6;
+}
+
+.navbar-nav{
+  margin-left: auto;
+  gap: 1rem;
 }
 
 .nav-link {
