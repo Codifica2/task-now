@@ -2,32 +2,25 @@
     margin-bottom: 20px;
   }
   
-  .card {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-  }
-  
-  .card-title {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  
-  .card-text {
-    font-size: 14px;
-    margin-bottom: 10px;
-  }
-  
-  .card-footer {
-    font-size: 14px;
-    font-weight: bold;
-    text-transform: uppercase;
-  }
-  
-  @media screen and (min-width: 768px) {
-    .task .col-md-6 {
-      flex-basis: 50%;
-      max-width: 50%;
-    }
-  }
+.card {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.card-text {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.card-footer {
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
