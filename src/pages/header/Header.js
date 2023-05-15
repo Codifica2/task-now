@@ -77,10 +77,14 @@ export default function Header () {
     window.location.href = '/'
   }
   return (
-    <Navbar className={styles['navbar-custom']} expand="lg">
-      <Container fluid className={styles['container-custom']}>
+    <Navbar className={styles['navbar-custom']}>
         <Navbar.Toggle aria-controls="basic-navbar-nav" className="me-auto" />
-        <Navbar.Brand className={styles['nav-link']} href="/">TaskNow</Navbar.Brand>
+
+        <Container>
+          <Navbar.Brand className={styles['nav-link']} href="/">TaskNow</Navbar.Brand>
+        </Container>
+
+        {/* Profile editing modal */}
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className={`ml-auto ${styles['nav-links-right']} justify-content-end`}>
             <button className={styles['profile-button']} onClick={() => setShowModalEditUser(true)}>
@@ -160,8 +164,6 @@ export default function Header () {
             <Nav.Link className={styles['nav-link']} onClick={handleLogout}>Cerrar Sesión</Nav.Link>
           </Nav>
         </Navbar.Collapse>
-      </Container>
     </Navbar>
   )
 }
-
