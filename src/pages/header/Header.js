@@ -6,6 +6,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import styles from './Header.module.css'
 import perfil from './perfil.png'
 import { useState } from 'react'
+import { useTaskContext } from '@/context/taskContext.js'
+import { CreateTaskModal } from '../Modals'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -15,6 +17,7 @@ export default function Header () {
   const [newLastName, setNewLastName] = useState('')
   const [newPassword, setPassword] = useState('')
   const [passwordConfirmation, setPasswordConfirmation] = useState('')
+  const { tasks, setTasks } = useTaskContext()
 
   const [passwordsMatch, setPasswordsMatch] = useState(true)
   const [passwordEmpty, setPasswordEmpty] = useState(true)
@@ -76,13 +79,56 @@ export default function Header () {
     // Redirige al usuario a la ruta raíz
     window.location.href = '/'
   }
+
+  const [showCreateTaskModal, setShowCreateTaskModal] = useState(false)
+
+  const handleCreateTask = () => {
+    setShowCreateTaskModal(true)
+  }
+
+  const handleCloseCreateTaskModal = () => {
+    setShowCreateTaskModal(false)
+  }
+
+  const handleSaveTask = async (task) => {
+    const response = await fetch('http://localhost:3001/api/tasks', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      },
+      body: JSON.stringify(task)
+    })
+
+    if (!response.ok) {
+      const message = `An error has occured: ${response.status}`
+      throw new Error(message)
+    }
+
+    const savedTask = await response.json()
+    console.log(savedTask)
+
+    // Aquí puedes añadir la tarea recién creada a tu lista de tareas.
+    setTasks([...tasks, savedTask])
+    setShowCreateTaskModal(false)
+  }
+
   return (
     <Navbar className={styles['navbar-custom']}>
+        <CreateTaskModal show={showCreateTaskModal} handleClose={handleCloseCreateTaskModal} handleSave={handleSaveTask} />
+
         <Navbar.Toggle aria-controls="basic-navbar-nav" className="me-auto" />
 
         <Container>
           <Navbar.Brand className={styles['nav-link']} href="/">TaskNow</Navbar.Brand>
         </Container>
+
+        <Button
+          variant="primary"
+          onClick={handleCreateTask}
+        >
+          Crear una nueva tarea
+        </Button>
 
         {/* Profile editing modal */}
         <Navbar.Collapse id="basic-navbar-nav">
