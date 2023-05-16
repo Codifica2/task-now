@@ -50,12 +50,8 @@ export default function ListTasks () {
     setShowEditTaskModal(true)
   }
 
-  const handleTaskClick = async (id) => {
-    const response = await fetch(`http://localhost:3001/api/tasks/${id}`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    })
-    const data = await response.json()
-    setTaskToShow(data)
+  const handleTaskClick = async (task) => {
+    setTaskToShow(task)
     setShowTaskDetailModal(true)
   }
 
@@ -207,7 +203,7 @@ export default function ListTasks () {
       <Row className={styles['card-container']}>
         {filteredTasks.map((task) => (
           <Col md={3} key={task.id}>
-            <Card onClick={() => handleTaskClick(task.id)}>
+            <Card onClick={() => handleTaskClick(task)} className={styles.card}>
               <Card.Body>
                 <Card.Title className={styles['card-title']}>{task.title}</Card.Title>
                 <Card.Text>{task.description}</Card.Text>
@@ -223,7 +219,10 @@ export default function ListTasks () {
                 <div className={styles.buttons}>
                   <Button
                     variant="primary"
-                    onClick={() => handleEditTaskClick(task)}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleEditTaskClick(task)
+                    }}
                     className={styles['icon-button']}
                   >
                     <FaPen size={12}/>
@@ -231,7 +230,10 @@ export default function ListTasks () {
 
                   <Button
                     variant="danger"
-                    onClick={() => handleDeleteTaskClick(task)}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleDeleteTaskClick(task)
+                    }}
                     className={styles['icon-button']}
                   >
                     <FaTrash size={12}/>
