@@ -149,13 +149,11 @@ export default function ListTasks () {
   }, [])
 
   return (
-    <Container>
+    <Container className={styles['dashboard-container']}>
 
-      <Row>
+      <Row className="mb-3">
         <InputGroup className="mt-3">
-          <Col xs={10}>
-            <br></br>
-
+          <Col>
             <Form.Select value={filterBy} onChange={(e) => setFilterBy(e.target.value)}
               style={{ backgroundColor: '#F5F5F5', color: '#012840' }}
             >

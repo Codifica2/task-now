@@ -1,3 +1,7 @@
+.dashboard-container {
+  padding-inline: 2rem;
+}
+
 .task {
     margin-bottom: 20px;
   }
