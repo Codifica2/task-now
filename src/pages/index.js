@@ -10,6 +10,7 @@ import React, { useEffect, useState } from 'react'
 import jwt_decode from 'jwt-decode'
 
 function Home () {
+  const [isLoading, setIsLoading] = useState(true)
   const { setUser, setToken } = useUserContext()
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -20,21 +21,28 @@ function Home () {
         setUser(null)
         setToken(null)
         window.location.reload()
+      } else {
+        setIsLoading(false)
       }
     } else {
       window.location.reload()
     }
   }, [])
-  return (
-    <>
-      <TaskProvider>
-        <Header/>
-        <div>
-          <Dashboard />
+  if (isLoading) {
+    return (
+      <div className="text-center" style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div className="spinner-border" style={{ width: '5rem', height: '5rem', borderWidth: '0.6rem' }} role="status">
         </div>
+      </div>
+    )
+  } else {
+    return (
+      <TaskProvider>
+        <Header />
+        <Dashboard />
       </TaskProvider>
-    </>
-  )
+    )
+  }
 }
 
 export default withAuth(Home) // envuelve tu componente con el HOC antes de exportarlo
