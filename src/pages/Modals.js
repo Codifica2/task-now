@@ -280,7 +280,7 @@ export function TaskDetailModal ({ show, handleClose, task }) {
         <h5>Description</h5>
         <p>{task.description}</p>
         <h5>Due Date</h5>
-        <p>{task.due_date}</p>
+        <p>{task.due_date.toString()}</p>
         <h5>Status</h5>
         <p>{task.status}</p>
         <h5>Category</h5>
