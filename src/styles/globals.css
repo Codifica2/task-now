@@ -73,6 +73,12 @@ select {
   }
 }
 
+@layer components {
+  #__next {
+      height: 100vh;
+      background-color: #f8f8f9;
+  }
+}
 
 :root {
   --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
