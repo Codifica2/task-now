@@ -5,14 +5,11 @@ import { useState, useEffect } from 'react'
 import { Container, Row, Col, Card, Form, InputGroup, FormControl, Button, Modal, ListGroup } from 'react-bootstrap'
 import { FaPen, FaTrash } from 'react-icons/fa'
 import { ConfirmDeleteTaskModal, EditTaskModal, TaskDetailModal } from '../Modals'
+import Filters from './filters/Filters'
 
 export default function ListTasks () {
   const { tasks, setTasks } = useTaskContext()
   const [filterBy, setFilterBy] = useState('')
-  const [showDeleteTaskModal, setShowDeleteTaskModal] = useState(false)
-  const [taskToDelete, setTaskToDelete] = useState(null)
-  const [showEditTaskModal, setShowEditTaskModal] = useState(false)
-  const [taskToEdit, setTaskToEdit] = useState(null)
   const [filters, setFilters] = useState({
     name: '',
     dueDate: '',
@@ -20,6 +17,13 @@ export default function ListTasks () {
     status: '',
     category: ''
   })
+
+  const [showDeleteTaskModal, setShowDeleteTaskModal] = useState(false)
+  const [taskToDelete, setTaskToDelete] = useState(null)
+
+  const [showEditTaskModal, setShowEditTaskModal] = useState(false)
+  const [taskToEdit, setTaskToEdit] = useState(null)
+
   const [showTaskDetailModal, setShowTaskDetailModal] = useState(false)
   const [taskToShow, setTaskToShow] = useState(null)
 
@@ -139,67 +143,22 @@ export default function ListTasks () {
 
       // Filtrar las tareas para que se incluyan las creadas por el usuario actual, es decir, usando el user id en localStorage
       const userTasks = data.filter(task => task.creator === JSON.parse(localStorage.getItem('user')).id)
-      setTasks(userTasks)
+
+      // Cast due date string to date object to perform sorts and filters later
+      const tasksWithDate = userTasks.map(task => {
+        const dueDateObject = new Date(task.due_date)
+
+        return ({ ...task, due_date: dueDateObject })
+      })
+
+      setTasks(tasksWithDate)
     }
     getTasks()
   }, [])
 
   return (
     <div className={styles['dashboard-container']}>
-
-      <Row className="mb-3">
-        <InputGroup className="mt-3">
-          <Col>
-            <Form.Select value={filterBy} onChange={(e) => setFilterBy(e.target.value)}
-              style={{ backgroundColor: '#F5F5F5', color: '#012840' }}
-            >
-              <option value="">Filtrar y ordenar por...</option>
-              <option value="title">Título</option>
-              <option value="description">Descripcion</option>
-              <option value="dueDateAsc" >Fecha de vencimiento (ascendente)</option>
-              <option value="dueDateDesc" >Fecha de vencimiento (descendente)</option>
-              <option value="category">Categoría</option>
-              <option value="state">Estado</option>
-            </Form.Select>
-            <Button variant="primary" className="my-custom-button" onClick={clearFilters}>Limpiar filtros</Button>
-
-            {filterBy === 'title' && (
-              <Form.Control
-                type="text"
-                placeholder="Filtrar por nombre"
-                value={filters.name}
-                onChange={(e) => handleFilterChange('name', e.target.value)}
-              />
-            )}
-            {filterBy === 'description' && (
-              <Form.Control
-                type="text"
-                placeholder="Filtrar por descripción"
-                value={filters.description}
-                onChange={(e) => handleFilterChange('description', e.target.value)}
-              />
-            )}
-            {filterBy === 'category' && (
-              <Form.Control
-                type="text"
-                placeholder="Filtrar por categoría"
-                value={filters.category}
-                onChange={(e) => handleFilterChange('category', e.target.value)}
-              />
-            )}
-            {filterBy === 'state' && (
-              <Form.Control
-                type="text"
-                placeholder="Filtrar por estado"
-                value={filters.status}
-                onChange={(e) => handleFilterChange('status', e.target.value)}
-              />
-            )}
-
-          </Col>
-        </InputGroup>
-      </Row>
-
+      <Filters/>
       <Row className={styles['card-container']}>
         {filteredTasks.map((task) => (
           <Col md={3} key={task.id}>
