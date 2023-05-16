@@ -7,7 +7,7 @@ import styles from './Header.module.css'
 import perfil from './perfil.png'
 import { useState } from 'react'
 import { useTaskContext } from '@/context/taskContext.js'
-import { CreateTaskModal } from '../Modals'
+import { CreateTaskModal, EditPasswordModal } from '../Modals'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -18,6 +18,7 @@ export default function Header () {
   const [newLastName, setNewLastName] = useState('')
   const [newPassword, setPassword] = useState('')
   const [passwordConfirmation, setPasswordConfirmation] = useState('')
+
   const { tasks, setTasks } = useTaskContext()
 
   const [passwordsMatch, setPasswordsMatch] = useState(true)
@@ -113,103 +114,110 @@ export default function Header () {
     setTasks([...tasks, savedTask])
     setShowCreateTaskModal(false)
   }
-
+  const [showEditPasswordModal, setShowEditPasswordModal] = useState(false)
+  const handleOpenEditPasswordModal = () => {
+    setShowEditPasswordModal(true)
+  }
+  const handleCloseEditPasswordModal = () => {
+    setShowEditPasswordModal(false)
+  }
   return (
     <Navbar className={styles['navbar-custom']}>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Brand className={styles['nav-link']} href="/">TaskNow</Navbar.Brand>
+      <Navbar.Toggle aria-controls="basic-navbar-nav" />
+      <Navbar.Brand className={styles['nav-link']} href="/">TaskNow</Navbar.Brand>
 
-        {/* Profile editing modal */}
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className={styles['navbar-nav']}>
-            <Button
-                variant="primary"
-                onClick={handleCreateTask}
-              >
-                Crear una nueva tarea
-            </Button>
+      {/* Profile editing modal */}
+      <Navbar.Collapse id="basic-navbar-nav">
+        <Nav className={styles['navbar-nav']}>
+          <Button
+            variant="primary"
+            onClick={handleCreateTask}
+          >
+            Crear una nueva tarea
+          </Button>
 
-            <Modal show={showModalEditUser} onHide={() => setShowModalEditUser(false)}>
-              <Modal.Header closeButton>
-                <Modal.Title>Editar Nombre y Contraseña</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <Form>
-                  <Form.Group >
-                    <Form.Label>Nombre</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Ingrese su nombre"
-                      value={newName}
-                      onChange={(e) => setNewName(e.target.value)}
-                    />
-                  </Form.Group>
-                  <Form.Group >
-                    <Form.Label>Apellido</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Ingrese su apellido"
-                      value={newLastName}
-                      onChange={(e) => setNewLastName(e.target.value)}
-                    />
-                  </Form.Group>
+          <Modal show={showModalEditUser} onHide={() => setShowModalEditUser(false)}>
+            <Modal.Header closeButton>
+              <Modal.Title>Editar Nombre y Contraseña</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form>
+                <Form.Group >
+                  <Form.Label>Nombre</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Ingrese su nombre"
+                    value={newName}
+                    onChange={(e) => setNewName(e.target.value)}
+                  />
+                </Form.Group>
+                <Form.Group >
+                  <Form.Label>Apellido</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Ingrese su apellido"
+                    value={newLastName}
+                    onChange={(e) => setNewLastName(e.target.value)}
+                  />
+                </Form.Group>
 
-                  <Form.Group controlId="formBasicPassword">
-                    <Form.Label>Contraseña</Form.Label>
-                    <Form.Control
-                      type="password"
-                      placeholder="Ingrese su contraseña"
-                      value={newPassword}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-                  </Form.Group>
-                  <Form.Group controlId="formBasicPasswordConfirmation">
-                    <Form.Label>Confirmar contraseña</Form.Label>
-                    <Form.Control
-                      type="password"
-                      placeholder="Ingrese su contraseña"
-                      value={passwordConfirmation}
-                      onChange={(e) => setPasswordConfirmation(e.target.value)}
-                    />
-                    {!passwordsMatch && (
-                      <div style={{ color: 'red', display: 'block' }}>
-                        Las contraseñas no coinciden
-                      </div>
-                    )}
-                    {passwordEmpty && (
-                      <div style={{ color: 'red', display: 'block' }}>
-                        La contraseña no puede ser vacia
-                      </div>
-                    )}
-                    {nameEmpty && (
-                      <div style={{ color: 'red', display: 'block' }}>
-                        El nombre no puede estar vacio
-                      </div>
-                    )}
-                    {nameEmpty && (
-                      <div style={{ color: 'red', display: 'block' }}>
-                        El apellido no puede estar vacio
-                      </div>
-                    )}
+                <Form.Group controlId="formBasicPassword">
+                  <Form.Label>Contraseña</Form.Label>
+                  <Form.Control
+                    type="password"
+                    placeholder="Ingrese su contraseña"
+                    value={newPassword}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </Form.Group>
+                <Form.Group controlId="formBasicPasswordConfirmation">
+                  <Form.Label>Confirmar contraseña</Form.Label>
+                  <Form.Control
+                    type="password"
+                    placeholder="Ingrese su contraseña"
+                    value={passwordConfirmation}
+                    onChange={(e) => setPasswordConfirmation(e.target.value)}
+                  />
+                  {!passwordsMatch && (
+                    <div style={{ color: 'red', display: 'block' }}>
+                      Las contraseñas no coinciden
+                    </div>
+                  )}
+                  {passwordEmpty && (
+                    <div style={{ color: 'red', display: 'block' }}>
+                      La contraseña no puede ser vacia
+                    </div>
+                  )}
+                  {nameEmpty && (
+                    <div style={{ color: 'red', display: 'block' }}>
+                      El nombre no puede estar vacio
+                    </div>
+                  )}
+                  {nameEmpty && (
+                    <div style={{ color: 'red', display: 'block' }}>
+                      El apellido no puede estar vacio
+                    </div>
+                  )}
 
-                  </Form.Group>
-                </Form>
-              </Modal.Body>
-              <Modal.Footer>
-                <Button variant="secondary" onClick={() => setShowModalEditUser(false)}>Cancelar</Button>
-                <Button variant="primary" onClick={(handleConfirmFields)}>Guardar</Button>
-              </Modal.Footer>
-            </Modal>
+                </Form.Group>
+              </Form>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={() => setShowModalEditUser(false)}>Cancelar</Button>
+              <Button variant="primary" onClick={(handleConfirmFields)}>Guardar</Button>
+            </Modal.Footer>
+          </Modal>
 
-            <NavDropdown title="Opciones" id="basic-nav-dropdown">
-              <NavDropdown.Item onClick={() => setShowModalEditUser(true)}> Editar perfil </NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item onClick={handleLogout}> Cerrar sesión </NavDropdown.Item>
-            </NavDropdown>
-          </Nav>
-        </Navbar.Collapse>
-
-        <CreateTaskModal show={showCreateTaskModal} handleClose={handleCloseCreateTaskModal} handleSave={handleSaveTask} />
+          <NavDropdown title="Opciones" id="basic-nav-dropdown">
+            <NavDropdown.Item onClick={() => setShowModalEditUser(true)}> Editar perfil </NavDropdown.Item>
+            <NavDropdown.Item onClick={handleOpenEditPasswordModal}> Cambiar contraseña </NavDropdown.Item>
+            <NavDropdown.Divider />
+            <NavDropdown.Item onClick={handleLogout}> Cerrar sesión </NavDropdown.Item>
+          </NavDropdown>
+        </Nav>
+      </Navbar.Collapse>
+      <EditPasswordModal show={showEditPasswordModal} handleClose={handleCloseEditPasswordModal} />
+      <CreateTaskModal show={showCreateTaskModal} handleClose={handleCloseCreateTaskModal} handleSave={handleSaveTask} />
     </Navbar>
   )
 }
