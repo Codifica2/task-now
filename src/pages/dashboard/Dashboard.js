@@ -3,7 +3,7 @@ import styles from './Dashboard.module.css'
 import { useTaskContext } from '@/context/taskContext.js'
 import { useState, useEffect } from 'react'
 import { Container, Row, Col, Card, Form, InputGroup, FormControl, Button, Modal, ListGroup } from 'react-bootstrap'
-import { FaEdit, FaTrash } from 'react-icons/fa'
+import { FaPen, FaTrash } from 'react-icons/fa'
 import { ConfirmDeleteTaskModal, EditTaskModal, TaskDetailModal } from '../Modals'
 
 export default function ListTasks () {
@@ -149,7 +149,7 @@ export default function ListTasks () {
   }, [])
 
   return (
-    <Container className={styles['dashboard-container']}>
+    <div className={styles['dashboard-container']}>
 
       <Row className="mb-3">
         <InputGroup className="mt-3">
@@ -203,30 +203,49 @@ export default function ListTasks () {
           </Col>
         </InputGroup>
       </Row>
-      <Row className="card-columns">
+
+      <Row className={styles['card-container']}>
         {filteredTasks.map((task) => (
-          <Col xs={12} sm={6} md={4} key={task.id}>
-            <br />
+          <Col md={3} key={task.id}>
             <Card onClick={() => handleTaskClick(task.id)}>
               <Card.Body>
-                <Card.Title>{task.title}</Card.Title>
+                <Card.Title className={styles['card-title']}>{task.title}</Card.Title>
                 <Card.Text>{task.description}</Card.Text>
               </Card.Body>
               <Card.Footer className="d-flex justify-content-between">
-                <div className="mr-auto">{task.status}</div>
-                <div>
-                  <Button variant="primary" onClick={() => handleEditTaskClick(task)}><FaEdit /></Button>
-                  <Button variant="danger" onClick={() => handleDeleteTaskClick(task)}><FaTrash /></Button>
+                <div className="mr-auto">
+                  {
+                    task.status === 'pending'
+                      ? 'Pendiente'
+                      : task.status
+                  }
+                </div>
+                <div className={styles.buttons}>
+                  <Button
+                    variant="primary"
+                    onClick={() => handleEditTaskClick(task)}
+                    className={styles['icon-button']}
+                  >
+                    <FaPen size={12}/>
+                  </Button>
+
+                  <Button
+                    variant="danger"
+                    onClick={() => handleDeleteTaskClick(task)}
+                    className={styles['icon-button']}
+                  >
+                    <FaTrash size={12}/>
+                  </Button>
                 </div>
               </Card.Footer>
             </Card>
-            <br />
           </Col>
         ))}
       </Row>
+
       <ConfirmDeleteTaskModal show={showDeleteTaskModal} handleClose={() => setShowDeleteTaskModal(false)} handleConfirm={handleConfirmDeleteTask} />
       <EditTaskModal show={showEditTaskModal} taskToEdit={taskToEdit} handleClose={() => setShowEditTaskModal(false)} handleSave={handleSaveEditedTask} />
       <TaskDetailModal show={showTaskDetailModal} handleClose={handleCloseTaskDetailModal} task={taskToShow} />
-    </Container>
+    </div>
   )
 }

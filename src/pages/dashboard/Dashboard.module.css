@@ -1,11 +1,18 @@
 .dashboard-container {
   padding-inline: 2rem;
+  height: calc(100% - 7rem);
 }
 
 .task {
     margin-bottom: 20px;
   }
   
+.card-container {
+  row-gap: 1rem;
+  height: inherit;
+  overflow: auto;
+}
+
 .card {
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -13,9 +20,9 @@
 }
 
 .card-title {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow:ellipsis
 }
 
 .card-text {
@@ -27,4 +34,17 @@
   font-size: 14px;
   font-weight: bold;
   text-transform: uppercase;
+}
+
+.icon-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  aspect-ratio: 1/1;
+  padding: .5rem;
+}
+
+.buttons {
+  display: flex;
+  gap: .25rem;
 }
