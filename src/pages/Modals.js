@@ -5,6 +5,91 @@ import DatePicker from 'react-datepicker'
 import { useUserContext } from '@/context/auth-context'
 import Alert from 'react-bootstrap/Alert'
 
+export function EditUserModal ({ show, handleClose }) {
+  const [newName, setNewName] = useState('')
+  const [newLastName, setNewLastName] = useState('')
+  const { user, setUser, token } = useUserContext()
+
+  const handleCleanUpdateProfile = () => {
+    setNewName('')
+    setNewLastName('')
+
+    handleClose()
+  }
+
+  const handleUpdateProfile = async () => {
+    // No hacer nada si no se quiere cambiar nada y se presionó guardar
+    if (newName === '' && newLastName === '') {
+      handleClose()
+    } else {
+      const updatedFields = {
+        name: newName,
+        lastname: newLastName
+      }
+
+      const response = await fetch(`http://localhost:3001/api/users/${user.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(updatedFields)
+      })
+
+      if (!response.ok) {
+        const message = `An error has occured: ${response.status}`
+        throw new Error(message)
+      }
+
+      const updatedUser = await response.json()
+
+      // Aquí puedes añadir la tarea recién creada a tu lista de tareas.
+      if (newName) {
+        setUser({ ...user, name: newName })
+      }
+
+      handleCleanUpdateProfile()
+    }
+  }
+
+  return (
+    <Modal show={show} onHide={handleCleanUpdateProfile}>
+      <Modal.Header style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+        <Modal.Title>Actualizar datos del perfil</Modal.Title>
+
+        <p style={{ color: 'grey' }}> Ingrese solo los campos que desea actualizar </p>
+      </Modal.Header>
+      <Modal.Body>
+        <Form>
+          <Row>
+            <Form.Group className='mb-3' as={Col}>
+              <Form.Label>Nombre</Form.Label>
+              <Form.Control
+                type="text"
+                value={newName}
+                onChange={(e) => setNewName(e.target.value)}
+              />
+            </Form.Group>
+
+            <Form.Group className='mb-3' as={Col}>
+              <Form.Label>Apellido</Form.Label>
+              <Form.Control
+                type="text"
+                value={newLastName}
+                onChange={(e) => setNewLastName(e.target.value)}
+              />
+            </Form.Group>
+          </Row>
+        </Form>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handleCleanUpdateProfile}>Cancelar</Button>
+        <Button variant="primary" onClick={handleUpdateProfile}>Guardar</Button>
+      </Modal.Footer>
+    </Modal>
+  )
+}
+
 export function CreateTaskModal ({ show, handleClose, handleSave }) {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
