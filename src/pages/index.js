@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 import { TaskProvider } from '@/context/taskContext.js'
-import withAuth from '../../withAuth'
 import { useUserContext } from '@/context/auth-context.js'
 
 import Header from './header/Header'
@@ -20,12 +19,13 @@ function Home () {
       if (decodedToken.exp < currentTime) {
         setUser(null)
         setToken(null)
-        window.location.reload()
+        // window redirect
+        window.location.href = '/login'
       } else {
         setIsLoading(false)
       }
     } else {
-      window.location.reload()
+      window.location.href = '/login'
     }
   }, [])
   if (isLoading) {
@@ -45,4 +45,4 @@ function Home () {
   }
 }
 
-export default withAuth(Home) // envuelve tu componente con el HOC antes de exportarlo
+export default Home
