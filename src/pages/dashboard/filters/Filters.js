@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { Col, Container, Row } from 'react-bootstrap'
 import Sort from './Sort'
+import Search from './Search'
 
 const Filters = ({ activeSort, setActiveSort }) => {
   return (
@@ -10,9 +11,7 @@ const Filters = ({ activeSort, setActiveSort }) => {
             <Col>
                 Filter
             </Col>
-            <Col>
-                Search
-            </Col>
+            <Search />
         </Row>
     </Container>
   )
