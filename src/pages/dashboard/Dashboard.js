@@ -9,6 +9,7 @@ import Filters from './filters/Filters'
 
 export default function ListTasks () {
   const { tasks, setTasks } = useTaskContext()
+  const [activeSort, setActiveSort] = useState('')
   const [filterBy, setFilterBy] = useState('')
   const [filters, setFilters] = useState({
     name: '',
@@ -158,9 +159,9 @@ export default function ListTasks () {
 
   return (
     <div className={styles['dashboard-container']}>
-      <Filters/>
+      <Filters activeSort={activeSort} setActiveSort={setActiveSort}/>
       <Row className={styles['card-container']}>
-        {filteredTasks.map((task) => (
+        {tasks.map((task) => (
           <Col md={3} key={task.id}>
             <Card onClick={() => handleTaskClick(task)} className={styles.card}>
               <Card.Body>
