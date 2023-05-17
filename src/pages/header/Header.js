@@ -72,28 +72,30 @@ export default function Header () {
   return (
     <>
       <Navbar className={styles['navbar-custom']}>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Brand className={styles['nav-link']} href="/">TaskNow</Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Brand className={styles['nav-link']} href="/">TaskNow</Navbar.Brand>
 
-          {/* Profile editing modal */}
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className={styles['navbar-nav']}>
-              <Button
-                  variant="primary"
-                  onClick={() => setShowCreateTaskModal(true)}
-                >
-                  Crear una nueva tarea
-              </Button>
+        {/* Profile editing modal */}
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className={styles['navbar-nav']}>
+            <Button
+              variant="primary"
+              onClick={() => setShowCreateTaskModal(true)}
+            >
+              Crear una nueva tarea
+            </Button>
 
-              <NavDropdown title="Opciones" id="basic-nav-dropdown">
-                <NavDropdown.Item onClick={() => setShowEditUserModal(true)}> Editar perfil </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item onClick={handleLogout}> Cerrar sesión </NavDropdown.Item>
-              </NavDropdown>
-            </Nav>
-          </Navbar.Collapse>
+            <NavDropdown title="Opciones" id="basic-nav-dropdown">
+              <NavDropdown.Item onClick={() => setShowEditUserModal(true)}> Editar perfil </NavDropdown.Item>
+              <NavDropdown.Item onClick={handleOpenEditPasswordModal}> Cambiar <br />contraseña </NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item onClick={handleLogout}> Cerrar sesión </NavDropdown.Item>
+            </NavDropdown>
+          </Nav>
+        </Navbar.Collapse>
       </Navbar>
       <EditUserModal show={showEditUserModal} handleClose={handleCloseEditUserModal} />
+      <EditPasswordModal show={showEditPasswordModal} handleClose={handleCloseEditPasswordModal} />
       <CreateTaskModal show={showCreateTaskModal} handleClose={handleCloseCreateTaskModal} handleSave={handleSaveTask} />
     </>
   )
