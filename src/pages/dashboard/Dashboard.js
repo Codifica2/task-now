@@ -148,8 +148,9 @@ export default function ListTasks () {
       // Cast due date string to date object to perform sorts and filters later
       const tasksWithDate = userTasks.map(task => {
         const dueDateObject = new Date(task.due_date)
+        const creationDateObject = new Date(task.creationDate)
 
-        return ({ ...task, due_date: dueDateObject })
+        return ({ ...task, due_date: dueDateObject, creationDate: creationDateObject })
       })
 
       setTasks(tasksWithDate)
