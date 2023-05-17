@@ -3,7 +3,7 @@ import { Col, Container, Row } from 'react-bootstrap'
 import Sort from './Sort'
 import Search from './Search'
 
-const Filters = ({ activeSort, setActiveSort }) => {
+const FilterSection = ({ activeSort, setActiveSort }) => {
   return (
     <Container className='mt-3 mb-3'>
         <Row>
@@ -71,4 +71,4 @@ const Filters = ({ activeSort, setActiveSort }) => {
 //   )
 }
 
-export default Filters
+export default FilterSection
