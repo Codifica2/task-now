@@ -8,7 +8,7 @@ import { ConfirmDeleteTaskModal, EditTaskModal, TaskDetailModal } from '../Modal
 import Filters from './filters/Filters'
 
 export default function ListTasks () {
-  const { tasks, setTasks } = useTaskContext()
+  const { tasks, setTasks, filteredTasks, setFilteredTasks } = useTaskContext()
   const [activeSort, setActiveSort] = useState('')
   const [filterBy, setFilterBy] = useState('')
   const [filters, setFilters] = useState({
@@ -64,7 +64,7 @@ export default function ListTasks () {
     setShowTaskDetailModal(false)
   }
 
-  const filteredTasks = tasks.filter((task) => {
+  const filteredTasks2 = tasks.filter((task) => {
     if (filterBy === 'title' && filters.name && !task.title.toLowerCase().includes(filters.name.toLowerCase())) return false
     if (filterBy === 'description' && filters.description && !task.description.toLowerCase().includes(filters.description.toLowerCase())) return false
     if (filterBy === 'dueDateAsc' && filters.due_date && new Date(task.due_date) !== new Date(filters.due_date)) return false
@@ -154,6 +154,7 @@ export default function ListTasks () {
       })
 
       setTasks(tasksWithDate)
+      setFilteredTasks(tasksWithDate)
     }
     getTasks()
   }, [])
@@ -162,7 +163,7 @@ export default function ListTasks () {
     <div className={styles['dashboard-container']}>
       <Filters activeSort={activeSort} setActiveSort={setActiveSort}/>
       <Row className={styles['card-container']}>
-        {tasks.map((task) => (
+        {filteredTasks.map((task) => (
           <Col md={3} key={task.id}>
             <Card onClick={() => handleTaskClick(task)} className={styles.card}>
               <Card.Body>

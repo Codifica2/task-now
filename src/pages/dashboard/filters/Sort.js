@@ -6,7 +6,7 @@ import { useTaskContext } from '@/context/taskContext.js'
 import { useState } from 'react'
 
 const Sort = ({ activeSort, setActiveSort }) => {
-  const { tasks, setTasks } = useTaskContext()
+  const { filteredTasks, setFilteredTasks } = useTaskContext()
   // On first sort button click, tasks should be sorted by descending date (newest first)
   const [descending, setDescending] = useState(false)
 
@@ -14,13 +14,13 @@ const Sort = ({ activeSort, setActiveSort }) => {
     let orderedTasks
 
     if (descending) {
-      orderedTasks = tasks.sort((a, b) => a.due_date - b.due_date)
+      orderedTasks = filteredTasks.sort((a, b) => a.due_date - b.due_date)
     } else {
-      orderedTasks = tasks.sort((a, b) => b.due_date - a.due_date)
+      orderedTasks = filteredTasks.sort((a, b) => b.due_date - a.due_date)
     }
 
     setActiveSort('dueDate')
-    setTasks([...orderedTasks])
+    setFilteredTasks([...orderedTasks])
     setDescending(!descending)
   }
 
@@ -32,17 +32,13 @@ const Sort = ({ activeSort, setActiveSort }) => {
     }
 
     if (descending) {
-      orderedTasks = tasks.sort((a, b) => a.creationDate - b.creationDate)
+      orderedTasks = filteredTasks.sort((a, b) => a.creationDate - b.creationDate)
     } else {
-      orderedTasks = tasks.sort((a, b) => b.creationDate - a.creationDate)
-    }
-
-    for (let i = 0; i < orderedTasks.length; i++) {
-      console.log(orderedTasks[i])
+      orderedTasks = filteredTasks.sort((a, b) => b.creationDate - a.creationDate)
     }
 
     setActiveSort('creationDate')
-    setTasks([...orderedTasks])
+    setFilteredTasks([...orderedTasks])
     setDescending(!descending)
   }
 
