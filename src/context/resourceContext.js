@@ -5,10 +5,10 @@ const ResourceContext = createContext()
 export const ResourceProvider = ({ children }) => {
   const [tasks, setTasks] = useState([])
   const [filteredTasks, setFilteredTasks] = useState([])
-  const [categories, setCategories] = useState([])
+  const [search, setSearch] = useState('')
 
   return (
-    <ResourceContext.Provider value={{ tasks, setTasks, filteredTasks, setFilteredTasks, categories, setCategories }}>
+    <ResourceContext.Provider value={{ tasks, setTasks, filteredTasks, setFilteredTasks, search, setSearch }}>
       {children}
     </ResourceContext.Provider>
   )

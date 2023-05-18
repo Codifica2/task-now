@@ -8,8 +8,9 @@ import { ConfirmDeleteTaskModal, EditTaskModal, TaskDetailModal } from '../Modal
 import FilterSection from './filters/FilterSection'
 
 export default function ListTasks () {
-  const { tasks, setTasks, filteredTasks, setFilteredTasks, categories, setCategories } = useResourceContext()
+  const { tasks, setTasks, filteredTasks, search } = useResourceContext()
   const [activeSort, setActiveSort] = useState('')
+  const [tasksToShow, setTasksToShow] = useState([])
   const [filterBy, setFilterBy] = useState('')
   const [filters, setFilters] = useState({
     name: '',
@@ -154,72 +155,82 @@ export default function ListTasks () {
       })
 
       setTasks(tasksWithDate)
-      setFilteredTasks(tasksWithDate)
+      setTasksToShow(tasksWithDate)
     }
     getTasks()
-
-    const getCategories = async () => {
-      const response = await fetch('http://localhost:3001/api/categories', {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-      })
-
-      const data = await response.json()
-      setCategories(data)
-    }
-    getCategories()
   }, [])
 
+  useEffect(() => {
+    const filteredTasksValues = filteredTasks.map(task => task.value)
+
+    setTasksToShow(
+      tasks
+        .filter(task => {
+          if (search !== '') {
+            return (task.title.toLowerCase().includes(search.toLowerCase()))
+          }
+          return (task)
+        })
+        .filter(task => {
+          if (filteredTasksValues.length !== 0) {
+            return (filteredTasksValues.includes(task.category))
+          }
+          return (task)
+        })
+    )
+  }, [search, filteredTasks])
+
   return (
-    <div className={styles['dashboard-container']}>
-      <FilterSection activeSort={activeSort} setActiveSort={setActiveSort}/>
-      <Row className={styles['card-container']}>
-        {filteredTasks.map((task) => (
-          <Col md={3} key={task.id}>
-            <Card onClick={() => handleTaskClick(task)} className={styles.card}>
-              <Card.Body>
-                <Card.Title className={styles['card-title']}>{task.title}</Card.Title>
-                <Card.Text>{task.description}</Card.Text>
-              </Card.Body>
-              <Card.Footer className="d-flex justify-content-between">
-                <div className="mr-auto">
-                  {
-                    task.status === 'pending'
-                      ? 'Pendiente'
-                      : task.status
-                  }
-                </div>
-                <div className={styles.buttons}>
-                  <Button
-                    variant="primary"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      handleEditTaskClick(task)
-                    }}
-                    className={styles['icon-button']}
-                  >
-                    <FaPen size={12}/>
-                  </Button>
+      <div className={styles['dashboard-container']}>
+        <FilterSection activeSort={activeSort} setActiveSort={setActiveSort}/>
+        <Row className={styles['card-container']}>
+          {tasksToShow.map((task) => (
+            <Col md={3} key={task.id}>
+              <Card onClick={() => handleTaskClick(task)} className={styles.card}>
+                <Card.Body>
+                  <Card.Title className={styles['card-title']}>{task.title}</Card.Title>
+                  <Card.Text>{task.description}</Card.Text>
+                </Card.Body>
+                <Card.Footer className="d-flex justify-content-between">
+                  <div className="mr-auto">
+                    {
+                      task.status === 'pending'
+                        ? 'Pendiente'
+                        : task.status
+                    }
+                  </div>
+                  <div className={styles.buttons}>
+                    <Button
+                      variant="primary"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleEditTaskClick(task)
+                      }}
+                      className={styles['icon-button']}
+                    >
+                      <FaPen size={12}/>
+                    </Button>
 
-                  <Button
-                    variant="danger"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      handleDeleteTaskClick(task)
-                    }}
-                    className={styles['icon-button']}
-                  >
-                    <FaTrash size={12}/>
-                  </Button>
-                </div>
-              </Card.Footer>
-            </Card>
-          </Col>
-        ))}
-      </Row>
+                    <Button
+                      variant="danger"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleDeleteTaskClick(task)
+                      }}
+                      className={styles['icon-button']}
+                    >
+                      <FaTrash size={12}/>
+                    </Button>
+                  </div>
+                </Card.Footer>
+              </Card>
+            </Col>
+          ))}
+        </Row>
 
-      <ConfirmDeleteTaskModal show={showDeleteTaskModal} handleClose={() => setShowDeleteTaskModal(false)} handleConfirm={handleConfirmDeleteTask} />
-      <EditTaskModal show={showEditTaskModal} taskToEdit={taskToEdit} handleClose={() => setShowEditTaskModal(false)} handleSave={handleSaveEditedTask} />
-      <TaskDetailModal show={showTaskDetailModal} handleClose={handleCloseTaskDetailModal} task={taskToShow} />
-    </div>
+        <ConfirmDeleteTaskModal show={showDeleteTaskModal} handleClose={() => setShowDeleteTaskModal(false)} handleConfirm={handleConfirmDeleteTask} />
+        <EditTaskModal show={showEditTaskModal} taskToEdit={taskToEdit} handleClose={() => setShowEditTaskModal(false)} handleSave={handleSaveEditedTask} />
+        <TaskDetailModal show={showTaskDetailModal} handleClose={handleCloseTaskDetailModal} task={taskToShow} />
+      </div>
   )
 }

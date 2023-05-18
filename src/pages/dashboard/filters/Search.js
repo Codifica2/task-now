@@ -2,20 +2,14 @@
 import InputGroup from 'react-bootstrap/InputGroup'
 import { RiSearchLine } from 'react-icons/ri'
 import { Col, Form } from 'react-bootstrap'
-import { useEffect, useState } from 'react'
 import { useResourceContext } from '@/context/resourceContext'
 
 const Search = () => {
-  const [textFilter, setTextFilter] = useState('')
-  const { tasks, setFilteredTasks } = useResourceContext()
+  const { search, setSearch } = useResourceContext()
 
   const handleSearchTasks = (event) => {
-    setTextFilter(event.target.value)
+    setSearch(event.target.value)
   }
-
-  useEffect(() => {
-    setFilteredTasks(tasks.filter(task => task.title.toLowerCase().includes(textFilter.toLowerCase())))
-  }, [textFilter])
 
   return (
         <Col lg={{ offset: 1 }}>
@@ -28,7 +22,7 @@ const Search = () => {
                     aria-label='Busqueda'
                     aria-describedby='Barra de busqueda por título'
                     onChange={handleSearchTasks}
-                    value={textFilter}
+                    value={search}
                 />
             </InputGroup>
         </Col>
