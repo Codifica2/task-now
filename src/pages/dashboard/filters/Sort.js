@@ -43,7 +43,7 @@ const Sort = ({ activeSort, setActiveSort }) => {
   }
 
   return (
-    <Col>
+    <Col lg={1}>
         <Dropdown>
           <Dropdown.Toggle variant='light'>
             <RiArrowUpDownFill/> Ordenar

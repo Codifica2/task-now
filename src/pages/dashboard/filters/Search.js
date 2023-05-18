@@ -18,7 +18,7 @@ const Search = () => {
   }, [textFilter])
 
   return (
-        <Col>
+        <Col lg={{ offset: 1 }}>
             <InputGroup>
                 <InputGroup.Text id='basic-addon1'>
                     <RiSearchLine/>
