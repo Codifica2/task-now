@@ -2,11 +2,11 @@
 import { Button, Col, Dropdown } from 'react-bootstrap'
 
 import { RiArrowUpDownFill, RiArrowDownLine, RiArrowUpLine } from 'react-icons/ri'
-import { useTaskContext } from '@/context/taskContext.js'
+import { useResourceContext } from '@/context/resourceContext.js'
 import { useState } from 'react'
 
 const Sort = ({ activeSort, setActiveSort }) => {
-  const { filteredTasks, setFilteredTasks } = useTaskContext()
+  const { filteredTasks, setFilteredTasks } = useResourceContext()
   // On first sort button click, tasks should be sorted by descending date (newest first)
   const [descending, setDescending] = useState(false)
 

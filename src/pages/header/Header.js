@@ -4,14 +4,14 @@ import { Navbar, Nav, Container, Modal, Form, Button } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import styles from './Header.module.css'
 import { useState } from 'react'
-import { useTaskContext } from '@/context/taskContext.js'
+import { useResourceContext } from '@/context/resourceContext.js'
 import { CreateTaskModal, EditUserModal, EditPasswordModal } from '../Modals'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Header () {
-  const { tasks, setTasks } = useTaskContext()
+  const { tasks, setTasks } = useResourceContext()
 
   const handleLogout = () => {
     // Elimina la información del usuario del localStorage

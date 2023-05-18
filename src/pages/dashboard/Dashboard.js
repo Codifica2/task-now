@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import styles from './Dashboard.module.css'
-import { useTaskContext } from '@/context/taskContext.js'
+import { useResourceContext } from '@/context/resourceContext'
 import { useState, useEffect } from 'react'
 import { Container, Row, Col, Card, Form, InputGroup, FormControl, Button, Modal, ListGroup } from 'react-bootstrap'
 import { FaPen, FaTrash } from 'react-icons/fa'
@@ -8,7 +8,7 @@ import { ConfirmDeleteTaskModal, EditTaskModal, TaskDetailModal } from '../Modal
 import FilterSection from './filters/FilterSection'
 
 export default function ListTasks () {
-  const { tasks, setTasks, filteredTasks, setFilteredTasks } = useTaskContext()
+  const { tasks, setTasks, filteredTasks, setFilteredTasks, categories, setCategories } = useResourceContext()
   const [activeSort, setActiveSort] = useState('')
   const [filterBy, setFilterBy] = useState('')
   const [filters, setFilters] = useState({
@@ -157,6 +157,16 @@ export default function ListTasks () {
       setFilteredTasks(tasksWithDate)
     }
     getTasks()
+
+    const getCategories = async () => {
+      const response = await fetch('http://localhost:3001/api/categories', {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      })
+
+      const data = await response.json()
+      setCategories(data)
+    }
+    getCategories()
   }, [])
 
   return (

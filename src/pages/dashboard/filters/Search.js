@@ -3,11 +3,11 @@ import InputGroup from 'react-bootstrap/InputGroup'
 import { RiSearchLine } from 'react-icons/ri'
 import { Col, Form } from 'react-bootstrap'
 import { useEffect, useState } from 'react'
-import { useTaskContext } from '@/context/taskContext'
+import { useResourceContext } from '@/context/resourceContext'
 
 const Search = () => {
   const [textFilter, setTextFilter] = useState('')
-  const { tasks, setFilteredTasks } = useTaskContext()
+  const { tasks, setFilteredTasks } = useResourceContext()
 
   const handleSearchTasks = (event) => {
     setTextFilter(event.target.value)
