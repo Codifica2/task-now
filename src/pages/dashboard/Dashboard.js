@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 import { Container, Row, Col, Card, Form, InputGroup, FormControl, Button, Modal, ListGroup } from 'react-bootstrap'
 import { FaPen, FaTrash } from 'react-icons/fa'
 import { ConfirmDeleteTaskModal, EditTaskModal, TaskDetailModal } from '../Modals'
-import Filters from './filters/Filters'
+import FilterSection from './filters/FilterSection'
 
 export default function ListTasks () {
   const { tasks, setTasks, filteredTasks, setFilteredTasks } = useTaskContext()
@@ -161,7 +161,7 @@ export default function ListTasks () {
 
   return (
     <div className={styles['dashboard-container']}>
-      <Filters activeSort={activeSort} setActiveSort={setActiveSort}/>
+      <FilterSection activeSort={activeSort} setActiveSort={setActiveSort}/>
       <Row className={styles['card-container']}>
         {filteredTasks.map((task) => (
           <Col md={3} key={task.id}>
