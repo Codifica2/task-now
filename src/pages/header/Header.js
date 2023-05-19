@@ -1,17 +1,13 @@
 /* eslint-disable no-unused-vars */
-import { Inter } from 'next/font/google'
-import { Navbar, Nav, Container, Modal, Form, Button } from 'react-bootstrap'
-import 'bootstrap/dist/css/bootstrap.min.css'
+import { Navbar, Nav, Row, Button } from 'react-bootstrap'
 import styles from './Header.module.css'
 import { useState } from 'react'
-import { useTaskContext } from '@/context/taskContext.js'
+import { useResourceContext } from '@/context/resourceContext.js'
 import { CreateTaskModal, EditUserModal, EditPasswordModal } from '../Modals'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 
-const inter = Inter({ subsets: ['latin'] })
-
 export default function Header () {
-  const { tasks, setTasks } = useTaskContext()
+  const { tasks, setTasks } = useResourceContext()
 
   const handleLogout = () => {
     // Elimina la información del usuario del localStorage
@@ -27,10 +23,6 @@ export default function Header () {
 
   const handleCloseEditUserModal = () => {
     setShowEditUserModal(false)
-  }
-
-  const handleUpdateProfile = () => {
-    console.log('update profile')
   }
 
   // Task creation modal
@@ -56,7 +48,6 @@ export default function Header () {
     }
 
     const savedTask = await response.json()
-    console.log(savedTask)
 
     // Aquí puedes añadir la tarea recién creada a tu lista de tareas.
     setTasks([...tasks, savedTask])
@@ -70,10 +61,10 @@ export default function Header () {
     setShowEditPasswordModal(false)
   }
   return (
-    <>
+    <Row style={{ margin: 0, padding: 0 }}>
       <Navbar className={styles['navbar-custom']}>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Brand className={styles['nav-link']} href="/">TaskNow</Navbar.Brand>
+        <Navbar.Brand href="/">TaskNow</Navbar.Brand>
 
         {/* Profile editing modal */}
         <Navbar.Collapse id="basic-navbar-nav">
@@ -97,6 +88,6 @@ export default function Header () {
       <EditUserModal show={showEditUserModal} handleClose={handleCloseEditUserModal} />
       <EditPasswordModal show={showEditPasswordModal} handleClose={handleCloseEditPasswordModal} />
       <CreateTaskModal show={showCreateTaskModal} handleClose={handleCloseCreateTaskModal} handleSave={handleSaveTask} />
-    </>
+    </Row>
   )
 }

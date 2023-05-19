@@ -1,23 +1,16 @@
 /* eslint-disable no-unused-vars */
 import styles from './Dashboard.module.css'
-import { useTaskContext } from '@/context/taskContext.js'
+import { useResourceContext } from '@/context/resourceContext'
 import { useState, useEffect } from 'react'
 import { Container, Row, Col, Card, Form, InputGroup, FormControl, Button, Modal, ListGroup } from 'react-bootstrap'
 import { FaPen, FaTrash } from 'react-icons/fa'
 import { ConfirmDeleteTaskModal, EditTaskModal, TaskDetailModal } from '../Modals'
-import Filters from './filters/Filters'
+import FilterSection from './filters/FilterSection'
 
 export default function ListTasks () {
-  const { tasks, setTasks } = useTaskContext()
+  const { tasks, setTasks, filteredTasks, search } = useResourceContext()
   const [activeSort, setActiveSort] = useState('')
-  const [filterBy, setFilterBy] = useState('')
-  const [filters, setFilters] = useState({
-    name: '',
-    dueDate: '',
-    description: '',
-    status: '',
-    category: ''
-  })
+  const [tasksToShow, setTasksToShow] = useState([])
 
   const [showDeleteTaskModal, setShowDeleteTaskModal] = useState(false)
   const [taskToDelete, setTaskToDelete] = useState(null)
@@ -27,23 +20,6 @@ export default function ListTasks () {
 
   const [showTaskDetailModal, setShowTaskDetailModal] = useState(false)
   const [taskToShow, setTaskToShow] = useState(null)
-
-  const handleFilterChange = (filter, value) => {
-    setFilters({
-      ...filters,
-      [filter]: value
-    })
-  }
-
-  const clearFilters = () => {
-    setFilters({
-      name: '',
-      dueDate: '',
-      description: '',
-      status: '',
-      category: ''
-    })
-  }
 
   const handleDeleteTaskClick = (task) => {
     setTaskToDelete(task)
@@ -64,23 +40,6 @@ export default function ListTasks () {
     setShowTaskDetailModal(false)
   }
 
-  const filteredTasks = tasks.filter((task) => {
-    if (filterBy === 'title' && filters.name && !task.title.toLowerCase().includes(filters.name.toLowerCase())) return false
-    if (filterBy === 'description' && filters.description && !task.description.toLowerCase().includes(filters.description.toLowerCase())) return false
-    if (filterBy === 'dueDateAsc' && filters.due_date && new Date(task.due_date) !== new Date(filters.due_date)) return false
-    if (filterBy === 'dueDateDesc' && filters.due_date && new Date(task.due_date) !== new Date(filters.due_date)) return false
-    if (filterBy === 'category' && filters.category && !task.category.toLowerCase().includes(filters.category.toLowerCase())) return false
-    if (filterBy === 'state' && filters.status && !task.status.toLowerCase().includes(filters.status.toLowerCase())) return false
-    return true
-  }).sort((a, b) => {
-    if (filterBy === 'dueDateAsc') {
-      return new Date(a.due_date) - new Date(b.due_date)
-    } else if (filterBy === 'dueDateDesc') {
-      return new Date(b.due_date) - new Date(a.due_date)
-    }
-    return 0
-  })
-
   const handleConfirmDeleteTask = async () => {
     try {
       const response = await fetch(`http://localhost:3001/api/tasks/${taskToDelete.id}`, {
@@ -98,8 +57,6 @@ export default function ListTasks () {
 
       // Actualizar la lista de tareas después de eliminar una
       setTasks(tasks.filter(task => task.id !== taskToDelete.id))
-
-      console.log(`Tarea ${taskToDelete.id} eliminada`)
     } catch (error) {
       console.error('Error al eliminar la tarea:', error)
     }
@@ -125,8 +82,6 @@ export default function ListTasks () {
 
       // Filter que agrega todas las tareas que existen y reemplaza la tarea que se editó
       setTasks(tasks.filter(task => task.id !== taskToEdit.id).concat({ ...updatedTask, id: taskToEdit.id }))
-
-      console.log(`Tarea ${taskToEdit.id} actualizada`)
     } catch (error) {
       console.error('Error al actualizar la tarea:', error)
     }
@@ -154,61 +109,83 @@ export default function ListTasks () {
       })
 
       setTasks(tasksWithDate)
+      setTasksToShow(tasksWithDate)
     }
     getTasks()
   }, [])
 
+  useEffect(() => {
+    const filteredTasksIds = filteredTasks.map(task => task.id)
+
+    setTasksToShow(
+      tasks
+        .filter(task => {
+          if (search !== '' && filteredTasks.length !== 0) {
+            return (task.title.toLowerCase().includes(search.toLowerCase()) && filteredTasksIds.includes(task.id))
+          } else if (search !== '') {
+            return (task.title.toLowerCase().includes(search.toLowerCase()))
+          } else if (filteredTasks.length !== 0) {
+            return (filteredTasksIds.includes(task.id))
+          } else {
+            return (true)
+          }
+        })
+    )
+  }, [search, filteredTasks])
+
   return (
-    <div className={styles['dashboard-container']}>
-      <Filters activeSort={activeSort} setActiveSort={setActiveSort}/>
-      <Row className={styles['card-container']}>
-        {tasks.map((task) => (
-          <Col md={3} key={task.id}>
-            <Card onClick={() => handleTaskClick(task)} className={styles.card}>
-              <Card.Body>
-                <Card.Title className={styles['card-title']}>{task.title}</Card.Title>
-                <Card.Text>{task.description}</Card.Text>
-              </Card.Body>
-              <Card.Footer className="d-flex justify-content-between">
-                <div className="mr-auto">
-                  {
-                    task.status === 'pending'
-                      ? 'Pendiente'
-                      : task.status
-                  }
-                </div>
-                <div className={styles.buttons}>
-                  <Button
-                    variant="primary"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      handleEditTaskClick(task)
-                    }}
-                    className={styles['icon-button']}
-                  >
-                    <FaPen size={12}/>
-                  </Button>
+    <Row style={{ margin: 0, padding: 0 }}>
+      <Container className={styles['dashboard-container']}>
+        <FilterSection activeSort={activeSort} setActiveSort={setActiveSort}/>
+        <Row className={styles['card-container']}>
+          {tasksToShow.map((task) => (
+            <Col md={3} key={task.id}>
+              <Card onClick={() => handleTaskClick(task)} className={styles.card}>
+                <Card.Body>
+                  <Card.Title className={styles['card-title']}>{task.title}</Card.Title>
+                  <Card.Text>{task.description}</Card.Text>
+                </Card.Body>
+                <Card.Footer className="d-flex justify-content-between">
+                  <div className="mr-auto">
+                    {
+                      task.status === 'pending'
+                        ? 'Pendiente'
+                        : task.status
+                    }
+                  </div>
+                  <div className={styles.buttons}>
+                    <Button
+                      variant="primary"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleEditTaskClick(task)
+                      }}
+                      className={styles['icon-button']}
+                    >
+                      <FaPen size={12}/>
+                    </Button>
 
-                  <Button
-                    variant="danger"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      handleDeleteTaskClick(task)
-                    }}
-                    className={styles['icon-button']}
-                  >
-                    <FaTrash size={12}/>
-                  </Button>
-                </div>
-              </Card.Footer>
-            </Card>
-          </Col>
-        ))}
-      </Row>
+                    <Button
+                      variant="danger"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleDeleteTaskClick(task)
+                      }}
+                      className={styles['icon-button']}
+                    >
+                      <FaTrash size={12}/>
+                    </Button>
+                  </div>
+                </Card.Footer>
+              </Card>
+            </Col>
+          ))}
+        </Row>
 
-      <ConfirmDeleteTaskModal show={showDeleteTaskModal} handleClose={() => setShowDeleteTaskModal(false)} handleConfirm={handleConfirmDeleteTask} />
-      <EditTaskModal show={showEditTaskModal} taskToEdit={taskToEdit} handleClose={() => setShowEditTaskModal(false)} handleSave={handleSaveEditedTask} />
-      <TaskDetailModal show={showTaskDetailModal} handleClose={handleCloseTaskDetailModal} task={taskToShow} />
-    </div>
+        <ConfirmDeleteTaskModal show={showDeleteTaskModal} handleClose={() => setShowDeleteTaskModal(false)} handleConfirm={handleConfirmDeleteTask} />
+        <EditTaskModal show={showEditTaskModal} taskToEdit={taskToEdit} handleClose={() => setShowEditTaskModal(false)} handleSave={handleSaveEditedTask} />
+        <TaskDetailModal show={showTaskDetailModal} handleClose={handleCloseTaskDetailModal} task={taskToShow} />
+      </Container>
+    </Row>
   )
 }

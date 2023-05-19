@@ -1,10 +1,10 @@
 /* eslint-disable no-unused-vars */
-import { TaskProvider } from '@/context/taskContext.js'
+import { ResourceProvider } from '@/context/resourceContext.js'
 import { useUserContext } from '@/context/auth-context.js'
 
 import Header from './header/Header'
 import Dashboard from './dashboard/Dashboard'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 // eslint-disable-next-line camelcase
 import jwt_decode from 'jwt-decode'
 import { Container } from 'react-bootstrap'
@@ -38,12 +38,12 @@ function Home () {
     )
   } else {
     return (
-      <TaskProvider>
-        <Container style = {{ height: '100%', backgroundColor: '#ffffff', boxShadow: '0px 0px 2px 1px lightgray', padding: 0 }}>
+      <ResourceProvider>
+        <Container style = {{ backgroundColor: '#ffffff', boxShadow: '0px 0px 2px 1px lightgray', padding: 0 }}>
           <Header />
           <Dashboard />
         </Container>
-      </TaskProvider>
+      </ResourceProvider>
     )
   }
 }

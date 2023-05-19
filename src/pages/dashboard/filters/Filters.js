@@ -1,75 +1,97 @@
 /* eslint-disable no-unused-vars */
-import { Col, Container, Row } from 'react-bootstrap'
-import Sort from './Sort'
+import styles from './Filters.module.css'
+import React, { useEffect, useState } from 'react'
+import Form from 'react-bootstrap/Form'
+import Select from 'react-select'
+import { useResourceContext } from '@/context/resourceContext.js'
+const { Col, Row } = require('react-bootstrap')
 
-const Filters = ({ activeSort, setActiveSort }) => {
+const Filters = () => {
+  const { tasks, setFilteredTasks } = useResourceContext()
+  const [statusFilter, setStatusFilter] = useState([])
+  const [categoriesFilter, setCategoriesFilter] = useState([])
+
+  const options = [...new Set(tasks.map(task => task.category))].map(category => {
+    return ({
+      value: category,
+      label: category.charAt(0).toUpperCase() + category.slice(1).toLowerCase()
+    })
+  })
+
+  const handleSelectOption = (selected) => {
+    setCategoriesFilter(selected)
+  }
+
+  const handleToggleStatus = (status) => {
+    if (statusFilter.includes(status)) {
+      setStatusFilter([...statusFilter].filter(stat => stat !== status))
+    } else {
+      setStatusFilter([...statusFilter].concat(status))
+    }
+  }
+
+  useEffect(() => {
+    const categoriesFilterValues = categoriesFilter.map(task => task.value)
+
+    const filteredTasks = [...tasks].filter(
+      (task) => {
+        if (categoriesFilter.length !== 0 && statusFilter.length !== 0) {
+          return (categoriesFilterValues.includes(task.category) && statusFilter.includes(task.status))
+        } else if (categoriesFilter.length !== 0) {
+          return (categoriesFilterValues.includes(task.category))
+        } else if (statusFilter.length !== 0) {
+          return (statusFilter.includes(task.status))
+        } else {
+          return true
+        }
+      }
+    )
+
+    if (filteredTasks.length === 0) {
+      setFilteredTasks(['empty'])
+    } else {
+      setFilteredTasks(filteredTasks)
+    }
+  }, [statusFilter, categoriesFilter])
+
   return (
-    <Container className='mt-3 mb-3'>
+    <>
         <Row>
-            <Sort activeSort={activeSort} setActiveSort={setActiveSort}/>
-            <Col>
-                Filter
+            <h4 className={styles['filter-section-title']}> Filtros </h4>
+        </Row>
+        <Row>
+            <Col lg={2}>
+                <h4 className={styles['filter-title']}> Categoria </h4>
+                <Select
+                  options={options}
+                  isMulti
+                  onChange={handleSelectOption}
+                  closeMenuOnSelect={false}
+                />
             </Col>
             <Col>
-                Search
+                <h4 className={styles['filter-title']}> Estado </h4>
+                <Form>
+                  <Form.Check
+                    inline
+                    label='Pendiente'
+                    onChange={() => handleToggleStatus('pending')}
+                  />
+                  <Form.Check
+                    inline
+                    label='En progreso'
+                    onChange={() => handleToggleStatus('En progreso')}
+                  />
+                  <Form.Check
+                    inline
+                    label='Terminada'
+                    onChange={() => handleToggleStatus('Terminada')}
+                  />
+                </Form>
             </Col>
         </Row>
-    </Container>
+    </>
   )
-  //     return (
-  //         <Row className="mb-3">
-  //             <InputGroup className="mt-3">
-  //             <Col>
-  //                 <Form.Select value={filterBy} onChange={(e) => setFilterBy(e.target.value)}
-  //                 style={{ backgroundColor: '#F5F5F5', color: '#012840' }}
-  //                 >
-  //                 <option value="">Filtrar y ordenar por...</option>
-  //                 <option value="title">Título</option>
-  //                 <option value="description">Descripcion</option>
-  //                 <option value="dueDateAsc" >Fecha de vencimiento (ascendente)</option>
-  //                 <option value="dueDateDesc" >Fecha de vencimiento (descendente)</option>
-  //                 <option value="category">Categoría</option>
-  //                 <option value="state">Estado</option>
-  //                 </Form.Select>
-  //                 <Button variant="primary" className="my-custom-button" onClick={clearFilters}>Limpiar filtros</Button>
-
-  //                 {filterBy === 'title' && (
-  //                 <Form.Control
-  //                     type="text"
-  //                     placeholder="Filtrar por nombre"
-  //                     value={filters.name}
-  //                     onChange={(e) => handleFilterChange('name', e.target.value)}
-  //                 />
-  //                 )}
-  //                 {filterBy === 'description' && (
-  //                 <Form.Control
-  //                     type="text"
-  //                     placeholder="Filtrar por descripción"
-  //                     value={filters.description}
-  //                     onChange={(e) => handleFilterChange('description', e.target.value)}
-  //                 />
-  //                 )}
-  //                 {filterBy === 'category' && (
-  //                 <Form.Control
-  //                     type="text"
-  //                     placeholder="Filtrar por categoría"
-  //                     value={filters.category}
-  //                     onChange={(e) => handleFilterChange('category', e.target.value)}
-  //                 />
-  //                 )}
-  //                 {filterBy === 'state' && (
-  //                 <Form.Control
-  //                     type="text"
-  //                     placeholder="Filtrar por estado"
-  //                     value={filters.status}
-  //                     onChange={(e) => handleFilterChange('status', e.target.value)}
-  //                 />
-  //                 )}
-
-//             </Col>
-//             </InputGroup>
-//         </Row>
-//   )
 }
 
 export default Filters

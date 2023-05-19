@@ -32,7 +32,6 @@ function LoginForm () {
       if (response.ok) {
         setUser({ id: data.id, name: data.name, email: data.email })
         setToken(data.auth_token)
-        console.log('Login successful:', data)
         // Set in localstorage
         localStorage.setItem('user', JSON.stringify({ id: data.id, name: data.name, email: data.email }))
         localStorage.setItem('token', data.auth_token)

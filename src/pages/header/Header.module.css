@@ -13,23 +13,3 @@
   margin-left: auto;
   gap: 1rem;
 }
-
-.nav-link {
-  color: #132239;
-}
-
-.nav-link:hover {
-  background-color: #097799;
-}
-
-.nav-link.active {
-  color: #ffd4bc;
-  background-color: #0B70AE;
-}
-
-.nav-links-right {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  flex-grow: 1;
-}
