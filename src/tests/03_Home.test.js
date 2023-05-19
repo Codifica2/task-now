@@ -4,7 +4,7 @@ import { expect } from 'chai'
 import { render, fireEvent, waitFor, screen } from '@testing-library/react'
 import Home from '@/pages/index.js'
 import { UserProvider } from '@/context/auth-context.js'
-import { TaskProvider } from '@/context/taskContext'
+import { ResourceProvider } from '@/context/resourceContext.js'
 
 describe('<Home />', () => {
   beforeEach(() => {
@@ -28,25 +28,30 @@ describe('<Home />', () => {
   it('renders all the expected elements', () => {
     render(
             <UserProvider>
-                <TaskProvider>
+                <ResourceProvider>
                     <Home />
-                </TaskProvider>
+                </ResourceProvider>
             </UserProvider>
     )
     expect(screen.getByText('TaskNow')).to.exist
-    // Boton "Crear una nueva tarea" debe existir
     expect(screen.getByText('Crear una nueva tarea')).to.exist
     expect(screen.getByText('Opciones')).to.exist
     expect(screen.getByText('Ordenar')).to.exist
-    expect(screen.getByText('Filter')).to.exist
-    expect(screen.getByText('Search')).to.exist
+    expect(screen.getByPlaceholderText('Buscar por título')).to.exist
+    expect(screen.getByText('Filtros')).to.exist
+    expect(screen.getByText('Categoria')).to.exist
+    expect(screen.getByText('Estado')).to.exist
+    expect(screen.getByText('Pendiente')).to.exist
+    expect(screen.getByText('En progreso')).to.exist
+    expect(screen.getByText('Terminada')).to.exist
+    
   })
   it('open CreateTaskModal when button is clicked', async () => {
     render(
             <UserProvider>
-                <TaskProvider>
+                <ResourceProvider>
                     <Home />
-                </TaskProvider>
+                </ResourceProvider>
             </UserProvider>
     )
     // Verificar que el modal no esté presente inicialmente
@@ -61,9 +66,9 @@ describe('<Home />', () => {
   it('open EditUserModal when button is clicked', async () => {
     render(
             <UserProvider>
-                <TaskProvider>
+                <ResourceProvider>
                     <Home />
-                </TaskProvider>
+                </ResourceProvider>
             </UserProvider>
     )
     // Verificar que el modal no esté presente inicialmente
@@ -80,9 +85,9 @@ describe('<Home />', () => {
   it('open EditPasswordModal when button is clicked', async () => {
     render(
             <UserProvider>
-                <TaskProvider>
+                <ResourceProvider>
                     <Home />
-                </TaskProvider>
+                </ResourceProvider>
             </UserProvider>
     )
     // Verificar que el modal no esté presente inicialmente
