@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import styles from './Filters.module.css'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Form from 'react-bootstrap/Form'
 import Select from 'react-select'
 import { useResourceContext } from '@/context/resourceContext.js'
@@ -8,6 +8,8 @@ const { Button, Container, Col, Row, Dropdown } = require('react-bootstrap')
 
 const Filters = () => {
   const { tasks, setFilteredTasks } = useResourceContext()
+  const [statusFilter, setStatusFilter] = useState([])
+  const [categoriesFilter, setCategoriesFilter] = useState([])
 
   const options = [...new Set(tasks.map(task => task.category))].map(category => {
     return ({
@@ -17,8 +19,40 @@ const Filters = () => {
   })
 
   const handleSelectOption = (selected) => {
-    setFilteredTasks(selected)
+    setCategoriesFilter(selected)
   }
+
+  const handleToggleStatus = (status) => {
+    if (statusFilter.includes(status)) {
+      setStatusFilter([...statusFilter].filter(stat => stat !== status))
+    } else {
+      setStatusFilter([...statusFilter].concat(status))
+    }
+  }
+
+  useEffect(() => {
+    const categoriesFilterValues = categoriesFilter.map(task => task.value)
+
+    const filteredTasks = [...tasks].filter(
+      (task) => {
+        if (categoriesFilter.length !== 0 && statusFilter.length !== 0) {
+          return (categoriesFilterValues.includes(task.category) && statusFilter.includes(task.status))
+        } else if (categoriesFilter.length !== 0) {
+          return (categoriesFilterValues.includes(task.category))
+        } else if (statusFilter.length !== 0) {
+          return (statusFilter.includes(task.status))
+        } else {
+          return true
+        }
+      }
+    )
+
+    if (filteredTasks.length === 0) {
+      setFilteredTasks(['empty'])
+    } else {
+      setFilteredTasks(filteredTasks)
+    }
+  }, [statusFilter, categoriesFilter])
 
   return (
     <>
@@ -32,6 +66,7 @@ const Filters = () => {
                   options={options}
                   isMulti
                   onChange={handleSelectOption}
+                  closeMenuOnSelect={false}
                 />
             </Col>
             <Col>
@@ -40,14 +75,17 @@ const Filters = () => {
                   <Form.Check
                     inline
                     label='Pendiente'
+                    onChange={() => handleToggleStatus('pending')}
                   />
                   <Form.Check
                     inline
                     label='En progreso'
+                    onChange={() => handleToggleStatus('En progreso')}
                   />
                   <Form.Check
                     inline
                     label='Terminada'
+                    onChange={() => handleToggleStatus('Terminada')}
                   />
                 </Form>
             </Col>

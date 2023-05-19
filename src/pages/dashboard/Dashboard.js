@@ -161,27 +161,28 @@ export default function ListTasks () {
   }, [])
 
   useEffect(() => {
-    const filteredTasksValues = filteredTasks.map(task => task.value)
+    console.log('filteredTasks', filteredTasks)
+    const filteredTasksIds = filteredTasks.map(task => task.id)
 
     setTasksToShow(
       tasks
         .filter(task => {
-          if (search !== '') {
+          if (search !== '' && filteredTasks.length !== 0) {
+            return (task.title.toLowerCase().includes(search.toLowerCase()) && filteredTasksIds.includes(task.id))
+          } else if (search !== '') {
             return (task.title.toLowerCase().includes(search.toLowerCase()))
+          } else if (filteredTasks.length !== 0) {
+            return (filteredTasksIds.includes(task.id))
+          } else {
+            return (true)
           }
-          return (task)
-        })
-        .filter(task => {
-          if (filteredTasksValues.length !== 0) {
-            return (filteredTasksValues.includes(task.category))
-          }
-          return (task)
         })
     )
   }, [search, filteredTasks])
 
   return (
-      <div className={styles['dashboard-container']}>
+    <Row style={{ margin: 0, padding: 0 }}>
+      <Container className={styles['dashboard-container']}>
         <FilterSection activeSort={activeSort} setActiveSort={setActiveSort}/>
         <Row className={styles['card-container']}>
           {tasksToShow.map((task) => (
@@ -231,6 +232,7 @@ export default function ListTasks () {
         <ConfirmDeleteTaskModal show={showDeleteTaskModal} handleClose={() => setShowDeleteTaskModal(false)} handleConfirm={handleConfirmDeleteTask} />
         <EditTaskModal show={showEditTaskModal} taskToEdit={taskToEdit} handleClose={() => setShowEditTaskModal(false)} handleSave={handleSaveEditedTask} />
         <TaskDetailModal show={showTaskDetailModal} handleClose={handleCloseTaskDetailModal} task={taskToShow} />
-      </div>
+      </Container>
+    </Row>
   )
 }
