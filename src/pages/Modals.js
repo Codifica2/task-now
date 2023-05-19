@@ -53,7 +53,7 @@ export function EditUserModal ({ show, handleClose }) {
   }
 
   return (
-    <Modal show={show} onHide={handleCleanUpdateProfile}>
+    <Modal show={show} onHide={handleCleanUpdateProfile} data-testid="edit-user-modal">
       <Modal.Header style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
         <Modal.Title>Actualizar datos del perfil</Modal.Title>
 
@@ -111,7 +111,7 @@ export function CreateTaskModal ({ show, handleClose, handleSave }) {
   const isFormValid = title && description && dueDate && category
 
   return (
-    <Modal show={show} onHide={handleClose}>
+    <Modal show={show} onHide={handleClose} data-testid="create-task-modal">
       <Modal.Header closeButton>
         <Modal.Title>Crear tarea</Modal.Title>
       </Modal.Header>
@@ -368,7 +368,7 @@ export function EditPasswordModal ({ show, handleClose }) {
   }
 
   return (
-    <Modal show={show} onHide={handleCloseReset}>
+    <Modal show={show} onHide={handleCloseReset} data-testid="edit-password-modal">
       <Modal.Header closeButton>
         <Modal.Title>Cambiar Contraseña</Modal.Title>
       </Modal.Header>
