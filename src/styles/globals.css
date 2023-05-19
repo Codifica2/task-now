@@ -75,7 +75,6 @@ select {
 
 @layer components {
   #__next {
-      height: 100vh;
       background-color: transparent;
   }
 }

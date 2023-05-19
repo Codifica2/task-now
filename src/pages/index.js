@@ -39,7 +39,7 @@ function Home () {
   } else {
     return (
       <ResourceProvider>
-        <Container style = {{ height: '100%', backgroundColor: '#ffffff', boxShadow: '0px 0px 2px 1px lightgray', padding: 0 }}>
+        <Container style = {{ backgroundColor: '#ffffff', boxShadow: '0px 0px 2px 1px lightgray', padding: 0 }}>
           <Header />
           <Dashboard />
         </Container>

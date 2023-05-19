@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { Inter } from 'next/font/google'
-import { Navbar, Nav, Container, Modal, Form, Button } from 'react-bootstrap'
+import { Navbar, Nav, Row, Button } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import styles from './Header.module.css'
 import { useState } from 'react'
@@ -70,7 +70,7 @@ export default function Header () {
     setShowEditPasswordModal(false)
   }
   return (
-    <>
+    <Row style={{ margin: 0, padding: 0 }}>
       <Navbar className={styles['navbar-custom']}>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Brand className={styles['nav-link']} href="/">TaskNow</Navbar.Brand>
@@ -97,6 +97,6 @@ export default function Header () {
       <EditUserModal show={showEditUserModal} handleClose={handleCloseEditUserModal} />
       <EditPasswordModal show={showEditPasswordModal} handleClose={handleCloseEditPasswordModal} />
       <CreateTaskModal show={showCreateTaskModal} handleClose={handleCloseCreateTaskModal} handleSave={handleSaveTask} />
-    </>
+    </Row>
   )
 }

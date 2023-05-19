@@ -1,6 +1,5 @@
 .dashboard-container {
   padding-inline: 2rem;
-  height: calc(100% - 7rem);
 }
 
 .task {
