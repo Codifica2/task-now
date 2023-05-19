@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import Form from 'react-bootstrap/Form'
 import Select from 'react-select'
 import { useResourceContext } from '@/context/resourceContext.js'
-const { Button, Container, Col, Row, Dropdown } = require('react-bootstrap')
+const { Col, Row } = require('react-bootstrap')
 
 const Filters = () => {
   const { tasks, setFilteredTasks } = useResourceContext()

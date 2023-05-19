@@ -11,14 +11,6 @@ export default function ListTasks () {
   const { tasks, setTasks, filteredTasks, search } = useResourceContext()
   const [activeSort, setActiveSort] = useState('')
   const [tasksToShow, setTasksToShow] = useState([])
-  const [filterBy, setFilterBy] = useState('')
-  const [filters, setFilters] = useState({
-    name: '',
-    dueDate: '',
-    description: '',
-    status: '',
-    category: ''
-  })
 
   const [showDeleteTaskModal, setShowDeleteTaskModal] = useState(false)
   const [taskToDelete, setTaskToDelete] = useState(null)
@@ -28,23 +20,6 @@ export default function ListTasks () {
 
   const [showTaskDetailModal, setShowTaskDetailModal] = useState(false)
   const [taskToShow, setTaskToShow] = useState(null)
-
-  const handleFilterChange = (filter, value) => {
-    setFilters({
-      ...filters,
-      [filter]: value
-    })
-  }
-
-  const clearFilters = () => {
-    setFilters({
-      name: '',
-      dueDate: '',
-      description: '',
-      status: '',
-      category: ''
-    })
-  }
 
   const handleDeleteTaskClick = (task) => {
     setTaskToDelete(task)
@@ -65,23 +40,6 @@ export default function ListTasks () {
     setShowTaskDetailModal(false)
   }
 
-  const filteredTasks2 = tasks.filter((task) => {
-    if (filterBy === 'title' && filters.name && !task.title.toLowerCase().includes(filters.name.toLowerCase())) return false
-    if (filterBy === 'description' && filters.description && !task.description.toLowerCase().includes(filters.description.toLowerCase())) return false
-    if (filterBy === 'dueDateAsc' && filters.due_date && new Date(task.due_date) !== new Date(filters.due_date)) return false
-    if (filterBy === 'dueDateDesc' && filters.due_date && new Date(task.due_date) !== new Date(filters.due_date)) return false
-    if (filterBy === 'category' && filters.category && !task.category.toLowerCase().includes(filters.category.toLowerCase())) return false
-    if (filterBy === 'state' && filters.status && !task.status.toLowerCase().includes(filters.status.toLowerCase())) return false
-    return true
-  }).sort((a, b) => {
-    if (filterBy === 'dueDateAsc') {
-      return new Date(a.due_date) - new Date(b.due_date)
-    } else if (filterBy === 'dueDateDesc') {
-      return new Date(b.due_date) - new Date(a.due_date)
-    }
-    return 0
-  })
-
   const handleConfirmDeleteTask = async () => {
     try {
       const response = await fetch(`http://localhost:3001/api/tasks/${taskToDelete.id}`, {
@@ -99,8 +57,6 @@ export default function ListTasks () {
 
       // Actualizar la lista de tareas después de eliminar una
       setTasks(tasks.filter(task => task.id !== taskToDelete.id))
-
-      console.log(`Tarea ${taskToDelete.id} eliminada`)
     } catch (error) {
       console.error('Error al eliminar la tarea:', error)
     }
@@ -126,8 +82,6 @@ export default function ListTasks () {
 
       // Filter que agrega todas las tareas que existen y reemplaza la tarea que se editó
       setTasks(tasks.filter(task => task.id !== taskToEdit.id).concat({ ...updatedTask, id: taskToEdit.id }))
-
-      console.log(`Tarea ${taskToEdit.id} actualizada`)
     } catch (error) {
       console.error('Error al actualizar la tarea:', error)
     }
@@ -161,7 +115,6 @@ export default function ListTasks () {
   }, [])
 
   useEffect(() => {
-    console.log('filteredTasks', filteredTasks)
     const filteredTasksIds = filteredTasks.map(task => task.id)
 
     setTasksToShow(

@@ -4,7 +4,7 @@ import { useUserContext } from '@/context/auth-context.js'
 
 import Header from './header/Header'
 import Dashboard from './dashboard/Dashboard'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 // eslint-disable-next-line camelcase
 import jwt_decode from 'jwt-decode'
 import { Container } from 'react-bootstrap'
