@@ -34,7 +34,6 @@ function RegisterForm () {
       })
       const data = await response.json()
       if (response.ok) {
-        console.log('Registration successful:', data)
         // Redirect to "/"
         window.location.href = '/'
       } else {
