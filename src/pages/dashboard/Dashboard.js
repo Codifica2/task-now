@@ -9,7 +9,6 @@ import FilterSection from './filters/FilterSection'
 
 export default function ListTasks () {
   const { tasks, setTasks, filteredTasks, search } = useResourceContext()
-  const [activeSort, setActiveSort] = useState('')
   const [tasksToShow, setTasksToShow] = useState([])
 
   const [showDeleteTaskModal, setShowDeleteTaskModal] = useState(false)
@@ -136,14 +135,16 @@ export default function ListTasks () {
   return (
     <Row style={{ margin: 0, padding: 0 }}>
       <Container className={styles['dashboard-container']}>
-        <FilterSection activeSort={activeSort} setActiveSort={setActiveSort}/>
+        <FilterSection/>
         <Row className={styles['card-container']}>
           {tasksToShow.map((task) => (
             <Col md={3} key={task.id}>
               <Card onClick={() => handleTaskClick(task)} className={styles.card}>
                 <Card.Body>
                   <Card.Title className={styles['card-title']}>{task.title}</Card.Title>
-                  <Card.Text>{task.description}</Card.Text>
+                  <Card.Text>
+                    {task.description}
+                  </Card.Text>
                 </Card.Body>
                 <Card.Footer className="d-flex justify-content-between">
                   <div className="mr-auto">

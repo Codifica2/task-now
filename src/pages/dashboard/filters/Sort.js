@@ -3,24 +3,29 @@ import { Button, Col, Dropdown } from 'react-bootstrap'
 
 import { RiArrowUpDownFill, RiArrowDownLine, RiArrowUpLine } from 'react-icons/ri'
 import { useResourceContext } from '@/context/resourceContext.js'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
-const Sort = ({ activeSort, setActiveSort }) => {
-  const { filteredTasks, setFilteredTasks } = useResourceContext()
+const Sort = () => {
+  const { tasks, setTasks } = useResourceContext()
   // On first sort button click, tasks should be sorted by descending date (newest first)
-  const [descending, setDescending] = useState(false)
+  const [descending, setDescending] = useState(true)
+  const [activeSort, setActiveSort] = useState('creationDate')
 
   const handleOrderTasksByDueDate = () => {
     let orderedTasks
 
+    if (activeSort === 'creationDate') {
+      setDescending(true)
+    }
+
     if (descending) {
-      orderedTasks = filteredTasks.sort((a, b) => a.due_date - b.due_date)
+      orderedTasks = tasks.sort((a, b) => a.due_date - b.due_date)
     } else {
-      orderedTasks = filteredTasks.sort((a, b) => b.due_date - a.due_date)
+      orderedTasks = tasks.sort((a, b) => b.due_date - a.due_date)
     }
 
     setActiveSort('dueDate')
-    setFilteredTasks([...orderedTasks])
+    setTasks([...orderedTasks])
     setDescending(!descending)
   }
 
@@ -32,13 +37,13 @@ const Sort = ({ activeSort, setActiveSort }) => {
     }
 
     if (descending) {
-      orderedTasks = filteredTasks.sort((a, b) => a.creationDate - b.creationDate)
+      orderedTasks = tasks.sort((a, b) => a.creationDate - b.creationDate)
     } else {
-      orderedTasks = filteredTasks.sort((a, b) => b.creationDate - a.creationDate)
+      orderedTasks = tasks.sort((a, b) => b.creationDate - a.creationDate)
     }
 
     setActiveSort('creationDate')
-    setFilteredTasks([...orderedTasks])
+    setTasks([...orderedTasks])
     setDescending(!descending)
   }
 

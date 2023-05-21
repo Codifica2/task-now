@@ -33,7 +33,7 @@ const Filters = () => {
   useEffect(() => {
     const categoriesFilterValues = categoriesFilter.map(task => task.value)
 
-    const filteredTasks = [...tasks].filter(
+    const filteredTasks = tasks.filter(
       (task) => {
         if (categoriesFilter.length !== 0 && statusFilter.length !== 0) {
           return (categoriesFilterValues.includes(task.category) && statusFilter.includes(task.status))
@@ -52,7 +52,7 @@ const Filters = () => {
     } else {
       setFilteredTasks(filteredTasks)
     }
-  }, [statusFilter, categoriesFilter])
+  }, [statusFilter, categoriesFilter, tasks])
 
   return (
     <>

@@ -47,7 +47,10 @@ export default function Header () {
       throw new Error(message)
     }
 
-    const savedTask = await response.json()
+    let savedTask = await response.json()
+    const savedTaskCreationDate = new Date(savedTask.creationDate)
+    const savedtaskDueDate = new Date(savedTask.due_date)
+    savedTask = { ...savedTask, creationDate: savedTaskCreationDate, due_date: savedtaskDueDate }
 
     // Aquí puedes añadir la tarea recién creada a tu lista de tareas.
     setTasks([...tasks, savedTask])
