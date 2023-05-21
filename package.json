@@ -6,19 +6,38 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "mocha --require @babel/register --require ./src/tests/setup.js './src/**/*.test.js'"
   },
   "dependencies": {
+    "bootstrap": "^5.2.3",
     "eslint-config-next": "13.3.1",
+    "jwt-decode": "^3.1.2",
     "next": "13.3.1",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-bootstrap": "^2.7.4",
+    "react-datepicker": "^4.11.0",
+    "react-dom": "18.2.0",
+    "react-icons": "^4.8.0",
+    "react-select": "^5.7.3"
   },
   "devDependencies": {
+    "@babel/core": "^7.21.8",
+    "@babel/preset-env": "^7.21.5",
+    "@babel/preset-react": "^7.18.6",
+    "@babel/register": "^7.21.0",
+    "@testing-library/react": "^14.0.0",
+    "babel-plugin-css-modules-transform": "^1.6.2",
+    "babel-plugin-module-resolver": "^5.0.0",
+    "chai": "^4.3.7",
+    "chai-dom": "^1.11.0",
     "eslint": "^8.39.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-n": "^15.7.0",
-    "eslint-plugin-promise": "^6.1.1"
+    "eslint-plugin-promise": "^6.1.1",
+    "jsdom": "^22.0.0",
+    "mocha": "^10.2.0",
+    "mock-local-storage": "^1.1.24"
   }
 }
