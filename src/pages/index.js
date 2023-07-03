@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react'
 // eslint-disable-next-line camelcase
 import jwt_decode from 'jwt-decode'
 import { Container } from 'react-bootstrap'
+import Head from 'next/head'
 
 function Home () {
   const [isLoading, setIsLoading] = useState(true)
@@ -32,13 +33,24 @@ function Home () {
   if (isLoading) {
     return (
       <div className="text-center" style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div className="spinner-border" style={{ width: '5rem', height: '5rem', borderWidth: '0.6rem' }} role="status">
-        </div>
+        <Head>
+          <title> TaskNow </title>
+          <meta charSet="utf-8" />
+          <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        </Head>
+
+        <div className="spinner-border" style={{ width: '5rem', height: '5rem', borderWidth: '0.6rem' }} role="status" />
       </div>
     )
   } else {
     return (
       <ResourceProvider>
+        <Head>
+          <title> TaskNow </title>
+          <meta charSet="utf-8" />
+          <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        </Head>
+
         <Container style = {{ backgroundColor: '#ffffff', boxShadow: '0px 0px 2px 1px lightgray', padding: 0 }}>
           <Header />
           <Dashboard />
