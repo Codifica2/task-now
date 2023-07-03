@@ -37,7 +37,7 @@ export default function Header () {
   }
 
   const handleSaveTask = async (task) => {
-    const response = await fetch('http://localhost:3001/api/tasks', {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tasks`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -35,6 +35,7 @@ suite(function (env) {
 
     before(async () => {
       driver = await new Builder().forBrowser('chrome').build()
+
       fetch('http://localhost:3000/api/users/', {
         method: 'POST',
         headers: {

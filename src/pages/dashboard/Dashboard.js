@@ -45,7 +45,7 @@ export default function ListTasks () {
 
   const handleConfirmDeleteTask = async () => {
     try {
-      const response = await fetch(`http://localhost:3001/api/tasks/${taskToDelete.id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tasks/${taskToDelete.id}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -69,7 +69,7 @@ export default function ListTasks () {
 
   const handleSaveEditedTask = async (updatedTask) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/tasks/${taskToEdit.id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tasks/${taskToEdit.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -94,7 +94,7 @@ export default function ListTasks () {
 
   useEffect(() => {
     const getTasks = async () => {
-      const response = await fetch('http://localhost:3001/api/tasks', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/tasks`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       })
 

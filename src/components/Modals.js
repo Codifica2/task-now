@@ -27,7 +27,7 @@ export function EditUserModal ({ show, handleClose }) {
         lastname: newLastName
       }
 
-      const response = await fetch(`http://localhost:3001/api/users/${user.id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/${user.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -324,7 +324,7 @@ export function EditPasswordModal ({ show, handleClose }) {
     }
 
     // Compruebe si la contraseña antigua es correcta
-    const response = await fetch('http://localhost:3001/api/login', {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -342,7 +342,7 @@ export function EditPasswordModal ({ show, handleClose }) {
       password: newPassword
     }
 
-    const updateResponse = await fetch(`http://localhost:3001/api/users/${user.id}`, {
+    const updateResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/${user.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
