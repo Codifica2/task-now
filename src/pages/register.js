@@ -48,7 +48,7 @@ function RegisterForm () {
   return (
     <>
       <img src='background.jpg' alt="background" style={{ position: 'fixed', top: '0', left: '0', width: '100%', height: '100%', zIndex: '-1' }} />
-      <Container className='my-5' style={{ maxWidth: '36%', margin: '0 auto' }}>
+      <Container id='register-container' className='my-5' style={{ maxWidth: '36%', margin: '0 auto' }}>
         <Card style={{ borderRadius: '20px' }}>
           <Card.Body className='d-flex flex-column align-items-center justify-content-center'>
             <div className='d-flex flex-column align-items-center'>
@@ -57,29 +57,29 @@ function RegisterForm () {
 
             {error && <div className="text-danger">{error}</div>}
 
-            <InputGroup className="mb-4 mt-4" size="md" style={{ width: '80%' }}>
+            <InputGroup id='first-name-input' className="mb-4 mt-4" size="md" style={{ width: '80%' }}>
               <input type="text" className="form-control" placeholder="First Name" aria-label="First Name" value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
             </InputGroup>
 
-            <InputGroup className="mb-4" size="md" style={{ width: '80%' }}>
+            <InputGroup id='last-name-input' className="mb-4" size="md" style={{ width: '80%' }}>
                 <input type="text" className="form-control" placeholder="Last Name" aria-label="Last Name" value={lastName} onChange={(e) => setLastName(e.target.value)} required />
             </InputGroup>
 
-            <InputGroup className="mb-4" size="md" style={{ width: '80%' }}>
+            <InputGroup id='email-input' className="mb-4" size="md" style={{ width: '80%' }}>
                 <input type="email" className="form-control" placeholder="Email" aria-label="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
             </InputGroup>
 
-            <InputGroup className="mb-4" size="md" style={{ width: '80%' }}>
+            <InputGroup id='password-input' className="mb-4" size="md" style={{ width: '80%' }}>
                 <input type="password" className="form-control" placeholder="Password" aria-label="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
             </InputGroup>
 
-            <InputGroup className="mb-4" size="md" style={{ width: '80%' }}>
+            <InputGroup id='confirm-password-input' className="mb-4" size="md" style={{ width: '80%' }}>
                 <input type="password" className="form-control" placeholder="Confirm Password" aria-label="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
             </InputGroup>
 
-            <Button variant='dark' size="md" className="mb-4 px-5" style={{ width: '80%' }} onClick={handleRegister} disabled={!firstName || !lastName || !email || !password || !confirmPassword}>Register</Button>
+            <Button id='register-button' variant='dark' size="md" className="mb-4 px-5" style={{ width: '80%' }} onClick={handleRegister} disabled={!firstName || !lastName || !email || !password || !confirmPassword}>Register</Button>
 
-            <p className="mb-2 pb-md-2" style={{ color: '#393f81' }}>Already have an account? <a href="/login" style={{ color: '#393f81' }}>Login here</a></p>
+            <p className="mb-2 pb-md-2" style={{ color: '#393f81' }}>Already have an account? <a id='login-link' href="/login" style={{ color: '#393f81' }}>Login here</a></p>
 
             </Card.Body>
         </Card>

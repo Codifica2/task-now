@@ -138,7 +138,7 @@ export default function ListTasks () {
 
   return (
     <Row style={{ margin: 0, padding: 0 }}>
-      <Container className={styles['dashboard-container']}>
+      <Container id='dashboard-container' className={styles['dashboard-container']}>
         <FilterSection/>
         <Row className={styles['card-container']}>
           {tasksToShow.map((task) => (

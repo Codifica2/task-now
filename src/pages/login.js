@@ -48,7 +48,7 @@ function LoginForm () {
   return (
         <>
             <img src='background.jpg' alt="background" style={{ position: 'fixed', top: '0', left: '0', width: '100%', height: '100%', zIndex: '-1' }} />
-            <Container className='my-5' style={{ maxWidth: '36%', margin: '0 auto' }}>
+            <Container id='login-container' className='my-5' style={{ maxWidth: '36%', margin: '0 auto' }}>
                 <Card style={{ borderRadius: '20px' }}>
                     <Card.Body className='d-flex flex-column align-items-center justify-content-center'>
                         <div className='d-flex flex-column align-items-center'>
@@ -59,16 +59,16 @@ function LoginForm () {
                         {error && <div className="text-danger">{error}</div>}
 
                         <InputGroup className="mb-4 mt-4" size="lg" style={{ width: '80%' }}>
-                            <input type="text" className="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" value={username} onChange={(e) => setUsername(e.target.value)} required />
+                            <input id='username-input' type="text" className="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" value={username} onChange={(e) => setUsername(e.target.value)} required />
                         </InputGroup>
 
                         <InputGroup className="mb-4" size="lg" style={{ width: '80%' }}>
-                            <input type="password" className="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                            <input id='password-input' type="password" className="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1" value={password} onChange={(e) => setPassword(e.target.value)} required />
                         </InputGroup>
 
-                        <Button variant='dark' size="lg" className="mb-4 px-5" style={{ width: '80%' }} onClick={handleLogin} disabled={!username || !password}>Login</Button>
+                        <Button id='login-button' variant='dark' size="lg" className="mb-4 px-5" style={{ width: '80%' }} onClick={handleLogin} disabled={!username || !password}>Login</Button>
                         <a className='small text-muted' href='#'>Forgot password?</a>
-                        <p className="mb-5 pb-md-2" style={{ color: '#393f81' }}>Don't have an account? <a href="/register" style={{ color: '#393f81' }}>Register here</a></p>
+                        <p className="mb-5 pb-md-2" style={{ color: '#393f81' }}>Don't have an account? <a id='register-link' href="/register" style={{ color: '#393f81' }}>Register here</a></p>
 
                     </Card.Body>
                 </Card>
