@@ -7,8 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "mocha --require @babel/register --require ./src/tests/setup.js './src/**/*.test.js'"
+    "test": "mocha --require @babel/register --require ./src/tests/setup.js './src/**/*.test.js'",
+    "build:full": "npm run build && next export"
+
   },
+  "proxy": "http://localhost:3001",
   "dependencies": {
     "bootstrap": "^5.2.3",
     "eslint-config-next": "13.3.1",
