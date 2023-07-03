@@ -6,7 +6,11 @@ import { useResourceContext } from '@/context/resourceContext.js'
 import { useEffect, useState } from 'react'
 
 const Sort = () => {
-  const { tasks, setTasks } = useResourceContext()
+  const contextValue = useResourceContext()
+  if (!contextValue) {
+    return <div>Error: Contexto no disponible</div>
+  }
+  const { tasks, setTasks } = contextValue
   // On first sort button click, tasks should be sorted by descending date (newest first)
   const [descending, setDescending] = useState(true)
   const [activeSort, setActiveSort] = useState('creationDate')

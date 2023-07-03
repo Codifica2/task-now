@@ -4,11 +4,15 @@ import { useResourceContext } from '@/context/resourceContext'
 import { useState, useEffect } from 'react'
 import { Container, Row, Col, Card, Form, InputGroup, FormControl, Button, Modal, ListGroup } from 'react-bootstrap'
 import { FaPen, FaTrash } from 'react-icons/fa'
-import { ConfirmDeleteTaskModal, EditTaskModal, TaskDetailModal } from '../Modals'
+import { ConfirmDeleteTaskModal, EditTaskModal, TaskDetailModal } from '../../components/Modals'
 import FilterSection from './filters/FilterSection'
 
 export default function ListTasks () {
-  const { tasks, setTasks, filteredTasks, search } = useResourceContext()
+  const contextValue = useResourceContext()
+  if (!contextValue) {
+    return <div>Error: Contexto no disponible</div>
+  }
+  const { tasks, setTasks, filteredTasks, search } = contextValue
   const [tasksToShow, setTasksToShow] = useState([])
 
   const [showDeleteTaskModal, setShowDeleteTaskModal] = useState(false)

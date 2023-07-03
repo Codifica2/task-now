@@ -3,11 +3,15 @@ import { Navbar, Nav, Row, Button } from 'react-bootstrap'
 import styles from './Header.module.css'
 import { useState } from 'react'
 import { useResourceContext } from '@/context/resourceContext.js'
-import { CreateTaskModal, EditUserModal, EditPasswordModal } from '../Modals'
+import { CreateTaskModal, EditUserModal, EditPasswordModal } from '../../components/Modals'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 
 export default function Header () {
-  const { tasks, setTasks } = useResourceContext()
+  const contextValue = useResourceContext()
+  if (!contextValue) {
+    return <div>Error: Contexto no disponible</div>
+  }
+  const { tasks, setTasks } = contextValue
 
   const handleLogout = () => {
     // Elimina la información del usuario del localStorage

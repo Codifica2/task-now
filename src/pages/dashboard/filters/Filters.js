@@ -7,7 +7,12 @@ import { useResourceContext } from '@/context/resourceContext.js'
 const { Col, Row } = require('react-bootstrap')
 
 const Filters = () => {
-  const { tasks, setFilteredTasks } = useResourceContext()
+  const contextValue = useResourceContext()
+  // Verificar si contextValue está definido
+  if (!contextValue) {
+    return <div>Error: Contexto no disponible</div>
+  }
+  const { tasks, setFilteredTasks } = contextValue
   const [statusFilter, setStatusFilter] = useState([])
   const [categoriesFilter, setCategoriesFilter] = useState([])
 
