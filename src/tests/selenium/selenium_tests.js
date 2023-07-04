@@ -10,12 +10,7 @@ suite(function (env) {
     let driver
 
     before(async () => {
-      const screen = {
-        width: 640,
-        height: 480
-      }
-
-      driver = await new Builder().forBrowser('chrome').setChromeOptions(new chrome.Options().headless().windowSize(screen)).build()
+      driver = await new Builder().forBrowser('chrome').setChromeOptions(new chrome.Options().headless()).build()
     })
 
     after(async () => {
@@ -40,12 +35,7 @@ suite(function (env) {
     let driver
 
     before(async () => {
-      const screen = {
-        width: 640,
-        height: 480
-      }
-
-      driver = await new Builder().forBrowser('chrome').setChromeOptions(new chrome.Options().headless().windowSize(screen)).build()
+      driver = await new Builder().forBrowser('chrome').setChromeOptions(new chrome.Options().headless()).build()
 
       fetch('http://localhost:3000/api/users/', {
         method: 'POST',
@@ -145,12 +135,7 @@ suite(function (env) {
     let driver
 
     before(async () => {
-      const screen = {
-        width: 640,
-        height: 480
-      }
-
-      driver = await new Builder().forBrowser('chrome').setChromeOptions(new chrome.Options().headless().windowSize(screen)).build()
+      driver = await new Builder().forBrowser('chrome').setChromeOptions(new chrome.Options().headless()).build()
     })
 
     after(async () => {
