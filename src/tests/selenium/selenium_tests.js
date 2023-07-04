@@ -9,7 +9,12 @@ suite(function (env) {
     let driver
 
     before(async () => {
-      driver = await new Builder().forBrowser('chrome').build()
+      const screen = {
+        width: 640,
+        height: 480
+      }
+
+      driver = await new Builder().forBrowser('chrome').setChromeOptions(new chrome.Options().headless().windowSize(screen)).build()
     })
 
     after(async () => {
@@ -34,7 +39,12 @@ suite(function (env) {
     let driver
 
     before(async () => {
-      driver = await new Builder().forBrowser('chrome').build()
+      const screen = {
+        width: 640,
+        height: 480
+      }
+
+      driver = await new Builder().forBrowser('chrome').setChromeOptions(new chrome.Options().headless().windowSize(screen)).build()
 
       fetch('http://localhost:3000/api/users/', {
         method: 'POST',
@@ -134,11 +144,16 @@ suite(function (env) {
     let driver
 
     before(async () => {
-      driver = await new Builder().forBrowser('chrome').build()
+      const screen = {
+        width: 640,
+        height: 480
+      }
+
+      driver = await new Builder().forBrowser('chrome').setChromeOptions(new chrome.Options().headless().windowSize(screen)).build()
     })
 
     after(async () => {
-      fetch('http://localhost:3000/api/users/', {
+      await fetch('http://localhost:3000/api/users/', {
         method: 'DELETE'
       })
       await driver.quit()
@@ -418,4 +433,125 @@ suite(function (env) {
       assert.ok(!isDisabled, 'button should be enabled if all fields are filled')
     })
   })
+
+  // describe('When in the dashboard', function () {
+  //   let driver
+  //   let userToken
+
+  //   before(async () => {
+  //     const screen = {
+  //       width: 640,
+  //       height: 480
+  //     }
+
+  //     driver = await new Builder().forBrowser('chrome').setChromeOptions(new chrome.Options().headless().windowSize(screen)).build()
+
+  //     // Create user
+  //     await fetch('http://localhost:3000/api/users/', {
+  //       method: 'POST',
+  //       headers: {
+  //         Accept: 'application/json',
+  //         'Content-Type': 'application/json'
+  //       },
+  //       body: JSON.stringify({
+  //         firstName: 'Juan',
+  //         lastName: 'Perez',
+  //         password: 'password',
+  //         email: 'juan.perez@mail.com'
+  //       })
+  //     })
+
+  //     // Login as that user
+  //     await fetch('http://localhost:3000/api/login/', {
+  //       method: 'POST',
+  //       headers: {
+  //         Accept: 'application/json',
+  //         'Content-Type': 'application/json'
+  //       },
+  //       body: JSON.stringify({
+  //         email: 'juan.perez@mail.com',
+  //         password: 'password'
+  //       })
+  //     }).then((response) => {
+  //       response.json().then((r) => {
+  //         userToken = r.auth_token
+  //       })
+  //     })
+  //   })
+
+  //   it('shows the dashboard if user is logged in', async function () {
+  //     // Check that the dashboard is shown
+  //     driver.get('http://localhost:3000/')
+  //     await driver.executeScript(`localStorage.setItem("token", "${userToken}");`)
+  //     driver.get('http://localhost:3000/')
+
+  //     await driver.wait(until.elementLocated(By.id('dashboard-container')))
+  //     const URL = await driver.getCurrentUrl()
+  //     assert.equal('http://localhost:3000/', URL)
+  //   })
+
+  //   it("let's the user create a task", async function () {
+  //     // Check that there are no tasks created
+  //     let tasksCreated
+  //     try {
+  //       tasksCreated = await driver.findElement(By.css('[class*=card-container] div'))
+  //     } catch {
+  //       tasksCreated = []
+  //     };
+
+  //     assert.ok(tasksCreated?.length === 0, 'there should be no tasks created')
+
+  //     // Create a task
+  //     const createTaskButton = await driver.findElement(By.id('create-task-button'))
+  //     createTaskButton.click()
+
+  //     await driver.wait(until.elementLocated(By.className('modal-content')))
+  //     const titleField = await driver.findElement(By.id('title-input'))
+  //     await driver.actions()
+  //       .sendKeys(titleField, 'Test task')
+  //       .perform()
+
+  //     const descriptionField = await driver.findElement(By.id('description-input'))
+  //     await driver.actions()
+  //       .sendKeys(descriptionField, 'This is a test task')
+  //       .perform()
+
+  //     const dateField = await driver.findElement(By.id('date-input'))
+  //     dateField.click()
+
+  //     await driver.wait(until.elementLocated(By.css('[class*=react-datepicker__day]')))
+  //     const datePickerMonthContainer = await driver.findElement(By.css('[class*=react-datepicker__month-container]'))
+  //     const datePickerMonth = await datePickerMonthContainer.findElement(By.css('[class*=react-datepicker__month]'))
+  //     const monthDays = await datePickerMonth.findElements(By.css('[class*=day]'))
+
+  //     for (let i = 0; i < monthDays.length; i++) {
+  //       const dayButton = monthDays[i]
+  //       const disabled = await dayButton.getAttribute('aria-disabled')
+
+  //       if (disabled === 'false') {
+  //         await dayButton.click()
+  //         break
+  //       }
+  //     }
+
+  //     const categoryField = await driver.findElement(By.id('category-input'))
+  //     await driver.actions()
+  //       .sendKeys(categoryField, 'Test category')
+  //       .perform()
+
+  //     const saveTaskButton = await driver.wait(until.elementLocated(By.id('save-task-button')))
+  //     await saveTaskButton.click()
+
+  //     // Check if task is shown in dashboard
+  //     const modal = await driver.findElement(By.className('modal-content'))
+  //     assert.ok(modal.length === 0, 'modal should be closed after saving task')
+  //   })
+
+  //   after(async () => {
+  //     await fetch('http://localhost:3000/api/users/', {
+  //       method: 'DELETE'
+  //     })
+  //     await driver.quit()
+  //   })
+  // })
 }, { browsers: [Browser.CHROME] })
