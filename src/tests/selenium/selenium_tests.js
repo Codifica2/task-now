@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+const chrome = require('selenium-webdriver/chrome')
 const { By, Builder, Browser, Key, until } = require('selenium-webdriver')
 const { suite } = require('selenium-webdriver/testing')
 const assert = require('assert')
